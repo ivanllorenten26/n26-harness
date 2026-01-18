@@ -1,7 +1,7 @@
 {
-  "name": "cylon26-harness",
+  "name": "n26-harness",
   "owner": {
-    "name": "CYLON26 Development Team",
+    "name": "Harness Development Team",
     "email": "ivan.llorente@n26.com"
   },
   "metadata": {
@@ -16,7 +16,7 @@
       "description": "Initialize harness projects from PDRs with complete infrastructure setup",
       "version": "3.0.0",
       "author": {
-        "name": "CYLON26 Team"
+        "name": "Harness Development Team"
       },
       "keywords": ["harness", "initialization", "pdr", "autonomous"],
       "category": "development",
@@ -28,7 +28,7 @@
       "description": "Create comprehensive Product Requirement Documents for harness projects",
       "version": "3.0.0",
       "author": {
-        "name": "CYLON26 Team"
+        "name": "Harness Development Team"
       },
       "keywords": ["pdr", "requirements", "documentation", "harness"],
       "category": "documentation",
@@ -40,7 +40,7 @@
       "description": "Generate comprehensive architectural plans and YAML configurations",
       "version": "3.0.0",
       "author": {
-        "name": "CYLON26 Team"
+        "name": "Harness Development Team"
       },
       "keywords": ["architecture", "planning", "yaml", "design"],
       "category": "development",
@@ -52,7 +52,7 @@
       "description": "Execute parallel implementation with specialized agents and context injection",
       "version": "3.0.0",
       "author": {
-        "name": "CYLON26 Team"
+        "name": "Harness Development Team"
       },
       "keywords": ["implementation", "agents", "parallel", "development"],
       "category": "development",
@@ -64,7 +64,7 @@
       "description": "Generate and manage claude.md files with project-specific context",
       "version": "3.0.0",
       "author": {
-        "name": "CYLON26 Team"
+        "name": "Harness Development Team"
       },
       "keywords": ["context", "claude-md", "project", "templates"],
       "category": "development",
@@ -76,7 +76,7 @@
       "description": "Extend existing harness projects with new features from incremental PDRs",
       "version": "3.0.0",
       "author": {
-        "name": "CYLON26 Team"
+        "name": "Harness Development Team"
       },
       "keywords": ["extend", "incremental", "features", "pdr"],
       "category": "development",
@@ -88,7 +88,7 @@
       "description": "Resume work after interruption with full context recovery",
       "version": "3.0.0",
       "author": {
-        "name": "CYLON26 Team"
+        "name": "Harness Development Team"
       },
       "keywords": ["resume", "recovery", "context", "interruption"],
       "category": "development",
@@ -100,16 +100,16 @@
       "description": "Specialized agents for parallel implementation coordination",
       "version": "3.0.0",
       "author": {
-        "name": "CYLON26 Team"
+        "name": "Harness Development Team"
       },
       "keywords": ["agents", "frontend", "backend", "data", "devops"],
       "category": "development",
       "license": "MIT",
       "agents": [
-        "./plugins/harness-agents/agents/harness-frontend-agent.md",
-        "./plugins/harness-agents/agents/harness-backend-agent.md",
-        "./plugins/harness-agents/agents/harness-data-agent.md",
-        "./plugins/harness-agents/agents/harness-devops-agent.md"
+        "./agents/harness-frontend-agent.md",
+        "./agents/harness-backend-agent.md",
+        "./agents/harness-data-agent.md",
+        "./agents/harness-devops-agent.md"
       ]
     }
   ]

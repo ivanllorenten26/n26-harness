@@ -1,212 +1,98 @@
-# CYLON26 Harness Ecosystem - Claude Code Marketplace
+# Ivan Llorente Claude Code plugins marketplace
 
-A comprehensive collection of plugins implementing Anthropic's methodology for long-running agents using Claude Code, enabling autonomous development of any type of project through structured PDRs.
+A sophisticated implementation of Anthropic's methodology for long-running agents using Claude Code, transforming Claude from an ad-hoc coding assistant into a systematic autonomous development platform.
 
-## 🚀 Quick Installation
+## Overview
 
-```bash
-# Install the entire marketplace
-/plugin marketplace add your-org/cylon26-harness
+The Harness is a **marketplace-ready distribution of 8 Claude Code plugins** that enable autonomous software development from requirements to deployment. It implements a three-layered context management system that maintains architectural consistency across complex, long-running development projects.
 
-# Install specific plugins
-/plugin install harness-init@cylon26-harness
-/plugin install harness-plan@cylon26-harness
-/plugin install harness-implement@cylon26-harness
-```
+## Core Skills
 
-## 📦 Available Plugins
+Install and use these Claude Code skills with the `/` command:
 
-### Core Workflow Plugins
+- **`/harness-pdr`** - Create structured Product Requirement Documents
+- **`/harness-init`** - Initialize projects from PDRs with infrastructure setup
+- **`/harness-plan`** - Generate YAML architectural blueprints
+- **`/harness-implement`** - Execute parallel development with specialized agents
+- **`/harness-resume`** - Resume interrupted work with context recovery
+- **`/harness-extend`** - Add incremental features to existing projects
 
-| Plugin | Description | Category |
-|--------|-------------|----------|
-| **harness-pdr** | Create comprehensive Product Requirement Documents | Documentation |
-| **harness-init** | Initialize harness projects from PDRs | Development |
-| **harness-plan** | Generate architectural plans and YAML configs | Development |
-| **harness-implement** | Execute parallel implementation with agents | Development |
+## Key Features
 
-### Management & Extension Plugins
+### 🤖 **Autonomous Development Pipeline**
 
-| Plugin | Description | Category |
-|--------|-------------|----------|
-| **harness-context** | Generate project-specific claude.md files | Development |
-| **harness-extend** | Extend projects with incremental features | Development |
-| **harness-resume** | Resume work after interruptions | Development |
-| **harness-agents** | Specialized agents for parallel coordination | Development |
+Complete workflow from requirements gathering to deployment with specialized AI agents
 
-## 🔄 Complete Workflow
+### 🏗️ **Three-layered Context Management**
 
-```bash
-# 1. Create requirements
-"Create a PDR for a web application"  # → harness-pdr activates
+- **Planning Layer**: YAML architectural blueprints
+- **Execution Layer**: JSON progress tracking
+- **Progress Layer**: Human-readable session updates
 
-# 2. Initialize project
-"Initialize harness project from my-app-pdr.md"  # → harness-init activates
+### ⚡ **Parallel Development Coordination**
 
-# 3. Generate architecture
-"Plan the architecture"  # → harness-plan activates automatically
+Context-aware specialized agents work simultaneously on different aspects:
 
-# 4. Implement features
-"Implement the planned features"  # → harness-implement activates
+- Frontend (React, TypeScript, UI/UX)
+- Backend (APIs, business logic, databases)
+- Data (migrations, processing, analytics)
+- DevOps (infrastructure, deployment, monitoring)
 
-# 5. Extend functionality
-"Extend project with admin-panel-pdr.md"  # → harness-extend activates
-```
+### 🎯 **Project Type Detection**
 
-## 🎯 Key Features
+Automatic detection and template generation for:
 
-- **🧠 Autonomous Development**: Complete project lifecycle from requirements to implementation
-- **⚡ Parallel Execution**: Multiple specialized agents work simultaneously
-- **📋 Context Preservation**: YAML + JSON artifacts maintain state across sessions
-- **🔄 Incremental Extension**: Add features seamlessly to existing projects
-- **🎨 Template System**: Comprehensive templates for different project types
+- **TypeScript/Remix** - Full-stack web applications
+- **Python/FastAPI** - High-performance APIs
+- **Kotlin/Spring Boot** - Enterprise applications
+- **Multi-language Polyglot** - Universal coordination
 
-## 🏗️ Architecture
+## Quick Start
 
-The harness ecosystem implements a **tri-layered context management system**:
+1. **Install Claude Code plugins** from the marketplace
+2. **Create requirements**: `/harness-pdr` - Interactive requirement gathering
+3. **Initialize project**: `/harness-init` - Set up infrastructure and architecture
+4. **Generate plan**: `/harness-plan` - Create YAML architectural blueprints
+5. **Implement features**: `/harness-implement` - Parallel development execution
 
-### 1. **Planning Layer** (YAML Architecture)
-```yaml
-global/
-├── stack-decisions.yaml      # Technology choices
-├── coding-standards.yaml     # Development conventions
-├── api-contracts.yaml        # REST patterns
-└── database-schema.yaml      # Data modeling
-```
-
-### 2. **Execution Layer** (JSON Tracking)
-```json
-{
-  "core_features": [...],
-  "implementation_status": "in_progress",
-  "agent_assignments": {...}
-}
-```
-
-### 3. **Progress Layer** (Human-Readable)
-```
-📋 Current Session: Feature Implementation Phase
-✅ Authentication system completed
-🔄 User dashboard in progress (harness-frontend-agent)
-⏳ Payment integration queued
-```
-
-## 🤖 Specialized Agents
-
-The harness-agents plugin provides four specialized agents with harness- prefix:
-
-- **harness-frontend-agent**: React, TypeScript, UI/UX, responsive design
-- **harness-backend-agent**: APIs, business logic, database integration
-- **harness-data-agent**: Schema design, migrations, data validation
-- **harness-devops-agent**: Infrastructure, deployment, monitoring
-
-These agents coordinate through harness-implement for parallel development with architectural consistency.
-
-## 📁 Project Structure Generated
+## Architecture
 
 ```
-your-project/
+project/
 ├── .claude/
 │   ├── feature_list.json        # Structured task tracking
 │   ├── claude-progress.txt      # Human-readable progress
 │   └── pdr.md                   # Original requirements
 ├── .harness/
 │   └── arquitectura/            # YAML architectural blueprints
-├── src/                         # Generated project structure
-└── [project-specific files according to architecture]
+└── src/                         # Generated project structure
 ```
 
-## 🔧 Advanced Usage
-
-### Team Installation
-
-Create `.claude/settings.json` in your project repos:
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "cylon26-harness": {
-      "source": {
-        "source": "github",
-        "repo": "your-org/cylon26-harness"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "harness-init@cylon26-harness": true,
-    "harness-plan@cylon26-harness": true,
-    "harness-implement@cylon26-harness": true
-  }
-}
-```
-
-### Private Repository Setup
+## Development Commands
 
 ```bash
-export GITHUB_TOKEN=ghp_xxxx
-/plugin marketplace add your-private-org/cylon26-harness
+# Run tests
+python plugins/harness-context/tests/test_harness_context.py
+
+# Test utilities
+python plugins/harness-context/utils/claude_md_generator.py
+python plugins/harness-plan/utils/project_detector.py
 ```
 
-## 🏗️ Project Structure
+## Key Benefits
 
-### Marketplace Plugins (For Users)
-```
-plugins/                    # Distributed via Claude Code marketplace
-├── harness-init/          # Project initialization
-├── harness-pdr/           # Requirements creation
-├── harness-plan/          # Architecture planning
-├── harness-implement/     # Implementation coordination
-├── harness-context/       # Project context management
-├── harness-extend/        # Feature extension
-├── harness-resume/        # Context recovery
-└── harness-agents/        # Specialized development agents
-```
+- **Cross-session Continuity** - Resume complex projects exactly where you left off
+- **Architectural Consistency** - YAML blueprints prevent technical debt
+- **Quality Assurance** - Integrated testing and compliance validation
+- **Context Injection** - Agent-specific filtered context prevents pollution
+- **Enterprise Ready** - Clean architecture patterns and professional workflows
 
-### Internal Tools (For Maintainers)
-```
-.claude/                   # Internal harness development tools
-└── skills/
-    └── harness-manage/    # Ecosystem management (not distributed)
-```
+## Documentation
 
-**Note**: The specialized harness agents are now included in the `harness-agents` plugin for distribution:
-```
-plugins/harness-agents/
-└── agents/
-    ├── harness-frontend-agent.md
-    ├── harness-backend-agent.md
-    ├── harness-data-agent.md
-    └── harness-devops-agent.md
-```
-
-## 📖 Documentation
-
-- [Complete Harness Guide](./docs/HARNESS.md)
-- [PDR Conventions](./docs/PDR-CONVENTIONS.md)
-- [Ecosystem Management](./docs/HARNESS_MANAGE.md) (Internal)
-- [Flow Analysis](./docs/HARNESS_FLOW_ANALYSIS.md)
-
-## 📈 Success Metrics
-
-- **90%+ Context Recovery** through structured artifacts
-- **70% Faster Development** via parallel agent coordination
-- **Zero Setup Time** for continuing interrupted projects
-- **100% Architectural Consistency** across all team members
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details.
+- [`HARNESS.md`](docs/HARNESS.md) - Complete system documentation
+- [`CLAUDE.md`](CLAUDE.md) - Claude Code integration guide
+- [`PDR-CONVENTIONS.md`](docs/PDR-CONVENTIONS.md) - Requirements documentation standards
 
 ---
 
-**"BY YOUR COMMAND" - Autonomous development made simple. 🤖**
-
-**CYLON26 Harness Ecosystem v3.0 - The future of AI-assisted software development.**
+**Built for Claude Code** | **Following Anthropic's Long-running Agent Methodology** | **Marketplace Ready**
