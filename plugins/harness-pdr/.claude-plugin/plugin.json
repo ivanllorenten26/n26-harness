@@ -1,0 +1,32 @@
+{
+  "name": "harness-pdr",
+  "version": "3.0.0",
+  "description": "Create comprehensive Product Requirement Documents for harness projects",
+  "author": {
+    "name": "CYLON26 Team",
+    "email": "ivan.llorente@n26.com"
+  },
+  "homepage": "https://github.com/your-org/cylon26-harness",
+  "repository": "https://github.com/your-org/cylon26-harness",
+  "license": "MIT",
+  "keywords": ["pdr", "requirements", "documentation", "harness"],
+  "category": "documentation",
+  "skills": [
+    "./skills/harness-pdr.md"
+  ],
+  "commands": [
+    "./commands/"
+  ],
+  "metadata": {
+    "harness_version": "3.0.0",
+    "component_type": "requirements_generator",
+    "dependencies": {
+      "required_tools": ["Read", "Write", "Edit", "AskUserQuestion"]
+    },
+    "integration": {
+      "works_with": ["harness-init"],
+      "provides": ["PDR creation", "requirements templates", "interactive interviews"],
+      "requires": []
+    }
+  }
+}

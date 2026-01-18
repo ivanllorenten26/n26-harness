@@ -1,0 +1,33 @@
+{
+  "name": "harness-implement",
+  "version": "3.0.0",
+  "description": "Execute parallel implementation with specialized agents and context injection",
+  "author": {
+    "name": "CYLON26 Team",
+    "email": "ivan.llorente@n26.com"
+  },
+  "homepage": "https://github.com/your-org/cylon26-harness",
+  "repository": "https://github.com/your-org/cylon26-harness",
+  "license": "MIT",
+  "keywords": ["implementation", "agents", "parallel", "development"],
+  "category": "development",
+  "skills": [
+    "./skills/harness-implement.md"
+  ],
+  "commands": [
+    "./commands/"
+  ],
+  "metadata": {
+    "harness_version": "3.0.0",
+    "component_type": "implementation_coordinator",
+    "dependencies": {
+      "python": ">=3.8",
+      "required_tools": ["Read", "Write", "Bash", "Glob", "Grep", "Task", "TodoWrite"]
+    },
+    "integration": {
+      "works_with": ["harness-frontend-agent", "harness-backend-agent", "harness-data-agent", "harness-devops-agent"],
+      "provides": ["parallel coordination", "context injection", "agent management"],
+      "requires": ["harness-plan"]
+    }
+  }
+}

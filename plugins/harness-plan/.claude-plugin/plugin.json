@@ -1,0 +1,33 @@
+{
+  "name": "harness-plan",
+  "version": "3.0.0",
+  "description": "Generate comprehensive architectural plans and YAML configurations",
+  "author": {
+    "name": "CYLON26 Team",
+    "email": "ivan.llorente@n26.com"
+  },
+  "homepage": "https://github.com/your-org/cylon26-harness",
+  "repository": "https://github.com/your-org/cylon26-harness",
+  "license": "MIT",
+  "keywords": ["architecture", "planning", "yaml", "design"],
+  "category": "development",
+  "skills": [
+    "./skills/harness-plan.md"
+  ],
+  "commands": [
+    "./commands/"
+  ],
+  "metadata": {
+    "harness_version": "3.0.0",
+    "component_type": "architectural_planner",
+    "dependencies": {
+      "python": ">=3.8",
+      "required_tools": ["Read", "Write", "Edit", "Glob", "Grep"]
+    },
+    "integration": {
+      "works_with": ["harness-init", "harness-implement"],
+      "provides": ["YAML architecture", "task breakdown", "project structure"],
+      "requires": ["harness-init"]
+    }
+  }
+}

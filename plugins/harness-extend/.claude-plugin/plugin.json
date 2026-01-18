@@ -1,0 +1,17 @@
+{
+  "name": "harness-extend",
+  "version": "3.0.0",
+  "description": "Extend existing harness projects with new features from incremental PDRs",
+  "author": {
+    "name": "CYLON26 Team",
+    "email": "ivan.llorente@n26.com"
+  },
+  "license": "MIT",
+  "keywords": ["extend", "incremental", "features", "pdr"],
+  "category": "development",
+  "skills": ["./skills/harness-extend.md"],
+  "metadata": {
+    "harness_version": "3.0.0",
+    "component_type": "feature_extender"
+  }
+}

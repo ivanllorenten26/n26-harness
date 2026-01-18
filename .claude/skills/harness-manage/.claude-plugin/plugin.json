@@ -1,0 +1,17 @@
+{
+  "name": "harness-manage",
+  "version": "3.0.0",
+  "description": "Manage and analyze the harness ecosystem with validation and documentation",
+  "author": {
+    "name": "CYLON26 Team",
+    "email": "ivan.llorente@n26.com"
+  },
+  "license": "MIT",
+  "keywords": ["manage", "validation", "ecosystem", "analysis"],
+  "category": "development",
+  "skills": ["./skills/harness-manage.md"],
+  "metadata": {
+    "harness_version": "3.0.0",
+    "component_type": "ecosystem_manager"
+  }
+}

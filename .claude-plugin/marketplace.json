@@ -1,0 +1,116 @@
+{
+  "name": "cylon26-harness",
+  "owner": {
+    "name": "CYLON26 Development Team",
+    "email": "ivan.llorente@n26.com"
+  },
+  "metadata": {
+    "description": "Long-running agents harness ecosystem for autonomous development using Claude Code",
+    "version": "3.0.0",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "harness-init",
+      "source": "./plugins/harness-init",
+      "description": "Initialize harness projects from PDRs with complete infrastructure setup",
+      "version": "3.0.0",
+      "author": {
+        "name": "CYLON26 Team"
+      },
+      "keywords": ["harness", "initialization", "pdr", "autonomous"],
+      "category": "development",
+      "license": "MIT"
+    },
+    {
+      "name": "harness-pdr",
+      "source": "./plugins/harness-pdr",
+      "description": "Create comprehensive Product Requirement Documents for harness projects",
+      "version": "3.0.0",
+      "author": {
+        "name": "CYLON26 Team"
+      },
+      "keywords": ["pdr", "requirements", "documentation", "harness"],
+      "category": "documentation",
+      "license": "MIT"
+    },
+    {
+      "name": "harness-plan",
+      "source": "./plugins/harness-plan",
+      "description": "Generate comprehensive architectural plans and YAML configurations",
+      "version": "3.0.0",
+      "author": {
+        "name": "CYLON26 Team"
+      },
+      "keywords": ["architecture", "planning", "yaml", "design"],
+      "category": "development",
+      "license": "MIT"
+    },
+    {
+      "name": "harness-implement",
+      "source": "./plugins/harness-implement",
+      "description": "Execute parallel implementation with specialized agents and context injection",
+      "version": "3.0.0",
+      "author": {
+        "name": "CYLON26 Team"
+      },
+      "keywords": ["implementation", "agents", "parallel", "development"],
+      "category": "development",
+      "license": "MIT"
+    },
+    {
+      "name": "harness-context",
+      "source": "./plugins/harness-context",
+      "description": "Generate and manage claude.md files with project-specific context",
+      "version": "3.0.0",
+      "author": {
+        "name": "CYLON26 Team"
+      },
+      "keywords": ["context", "claude-md", "project", "templates"],
+      "category": "development",
+      "license": "MIT"
+    },
+    {
+      "name": "harness-extend",
+      "source": "./plugins/harness-extend",
+      "description": "Extend existing harness projects with new features from incremental PDRs",
+      "version": "3.0.0",
+      "author": {
+        "name": "CYLON26 Team"
+      },
+      "keywords": ["extend", "incremental", "features", "pdr"],
+      "category": "development",
+      "license": "MIT"
+    },
+    {
+      "name": "harness-resume",
+      "source": "./plugins/harness-resume",
+      "description": "Resume work after interruption with full context recovery",
+      "version": "3.0.0",
+      "author": {
+        "name": "CYLON26 Team"
+      },
+      "keywords": ["resume", "recovery", "context", "interruption"],
+      "category": "development",
+      "license": "MIT"
+    },
+    {
+      "name": "harness-agents",
+      "source": "./plugins/harness-agents",
+      "description": "Specialized agents for parallel implementation coordination",
+      "version": "3.0.0",
+      "author": {
+        "name": "CYLON26 Team"
+      },
+      "keywords": ["agents", "frontend", "backend", "data", "devops"],
+      "category": "development",
+      "license": "MIT",
+      "agents": [
+        "./plugins/harness-agents/agents/harness-frontend-agent.md",
+        "./plugins/harness-agents/agents/harness-backend-agent.md",
+        "./plugins/harness-agents/agents/harness-data-agent.md",
+        "./plugins/harness-agents/agents/harness-devops-agent.md"
+      ]
+    }
+  ]
+}

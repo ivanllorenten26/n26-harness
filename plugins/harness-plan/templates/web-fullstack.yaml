@@ -1,0 +1,101 @@
+# Template arquitectónico para aplicaciones web full-stack
+# Usado por /harness-plan para generar arquitectura específica
+
+project_type: "web-fullstack"
+
+technology_stack:
+  frontend:
+    framework: "react"
+    language: "typescript"
+    state_management: "zustand"
+    styling: "tailwindcss"
+    testing: "vitest"
+    build_tool: "vite"
+    router: "react-router-dom"
+    ui_library: "shadcn/ui"
+  backend:
+    runtime: "nodejs"
+    framework: "express"
+    language: "typescript"
+    database: "postgresql"
+    orm: "prisma"
+    testing: "jest"
+    validation: "zod"
+    authentication: "jwt"
+  infrastructure:
+    deployment: "vercel"
+    database_host: "neon"
+    monitoring: "sentry"
+    analytics: "vercel-analytics"
+    storage: "vercel-blob"
+
+architecture_patterns:
+  frontend: "component-based"
+  backend: "layered-architecture"
+  database: "relational"
+  api_design: "rest"
+  state_management: "centralized"
+  error_handling: "global-boundary"
+
+development_environment:
+  package_manager: "npm"
+  node_version: "18+"
+  typescript_config: "strict"
+  linting: "eslint"
+  formatting: "prettier"
+  git_hooks: "husky"
+
+project_structure:
+  frontend:
+    components: "src/components/"
+    hooks: "src/hooks/"
+    pages: "src/pages/"
+    utils: "src/utils/"
+    types: "src/types/"
+    styles: "src/styles/"
+    assets: "src/assets/"
+  backend:
+    routes: "src/routes/"
+    services: "src/services/"
+    models: "src/models/"
+    middleware: "src/middleware/"
+    utils: "src/utils/"
+    types: "src/types/"
+    config: "src/config/"
+
+task_patterns:
+  setup_tasks:
+    - "Configurar estructura de proyecto y dependencias base"
+    - "Configurar base de datos y esquemas iniciales"
+    - "Configurar herramientas de desarrollo (linting, testing)"
+
+  foundation_tasks:
+    - "Implementar sistema de autenticación base"
+    - "Crear componentes UI base y design system"
+    - "Configurar routing y navegación"
+
+  feature_implementation:
+    parallel_groups:
+      - "UI Components (frontend agent)"
+      - "API Endpoints (backend agent)"
+      - "Database Models (backend agent)"
+      - "Integration Testing (devops agent)"
+
+testing_strategy:
+  unit_tests:
+    frontend: "vitest + testing-library"
+    backend: "jest + supertest"
+  integration_tests: "playwright"
+  e2e_tests: "puppeteer-mcp"
+
+deployment_strategy:
+  frontend:
+    platform: "vercel"
+    build_command: "npm run build"
+    output_directory: "dist"
+  backend:
+    platform: "vercel-functions"
+    runtime: "nodejs18.x"
+  database:
+    migrations: "prisma migrate deploy"
+    seeding: "prisma db seed"

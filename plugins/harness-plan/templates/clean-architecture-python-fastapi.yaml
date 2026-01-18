@@ -1,0 +1,582 @@
+# Clean Architecture Template para Python + FastAPI
+# Template para generar estructura completa de Clean Architecture en proyectos FastAPI
+
+project_type: "api-backend"
+language: "python"
+framework: "fastapi"
+architecture_pattern: "clean_hexagonal"
+
+directory_structure:
+  app:
+    domain:
+      - "entities/"
+      - "value_objects/"
+      - "domain_services/"
+      - "domain_events/"
+      - "specifications/"
+    application:
+      - "use_cases/"
+      - "commands/"
+      - "queries/"
+      - "ports/"
+      - "dto/"
+    infrastructure:
+      - "adapters/"
+      - "repositories/"
+      - "external_services/"
+      - "database/"
+      - "config/"
+    api:
+      - "routers/"
+      - "dependencies/"
+      - "middleware/"
+      - "schemas/"
+
+# Templates de código por capa
+code_templates:
+
+  # DOMAIN LAYER - Entities
+  domain_entity:
+    template: |
+      # app/domain/entities/{{entity_name}}.py
+      from dataclasses import dataclass
+      from typing import Optional
+      from abc import ABC, abstractmethod
+
+      from ..value_objects import {{value_objects}}
+
+      @dataclass
+      class {{EntityName}}:
+        id: {{EntityName}}Id
+        {{#properties}}
+        {{name}}: {{type}}
+        {{/properties}}
+
+        {{#methods}}
+        def {{name}}(self, {{parameters}}) -> {{return_type}}:
+            """{{description}}"""
+            # Domain business logic here
+            {{business_logic}}
+        {{/methods}}
+
+        @classmethod
+        def create(cls, primitives: dict) -> '{{EntityName}}':
+            """Factory method to create entity from primitives."""
+            return cls(
+                id={{EntityName}}Id(primitives['id']),
+                {{#properties}}
+                {{name}}={{#if is_value_object}}{{Type}}(primitives['{{name}}']){{else}}primitives['{{name}}']{{/if}},
+                {{/properties}}
+            )
+
+        def to_primitives(self) -> dict:
+            """Convert entity to primitives for serialization."""
+            return {
+                'id': self.id.value,
+                {{#properties}}
+                '{{name}}': {{#if is_value_object}}self.{{name}}.value{{else}}self.{{name}}{{/if}},
+                {{/properties}}
+            }
+
+  # DOMAIN LAYER - Value Objects
+  domain_value_object:
+    template: |
+      # app/domain/value_objects/{{value_object_name}}.py
+      from dataclasses import dataclass
+      from typing import Any
+
+      @dataclass(frozen=True)
+      class {{ValueObjectName}}:
+        value: {{primitive_type}}
+
+        def __post_init__(self):
+            self._validate(self.value)
+
+        def _validate(self, value: {{primitive_type}}) -> None:
+            {{#validations}}
+            if {{condition}}:
+                raise ValueError('{{error_message}}')
+            {{/validations}}
+
+        def __str__(self) -> str:
+            return str(self.value)
+
+        def __eq__(self, other: Any) -> bool:
+            if not isinstance(other, {{ValueObjectName}}):
+                return False
+            return self.value == other.value
+
+  # APPLICATION LAYER - Use Cases
+  application_use_case:
+    template: |
+      # app/application/use_cases/{{use_case_name}}.py
+      from typing import Optional
+      from abc import ABC, abstractmethod
+
+      from ...domain.entities import {{entities}}
+      from ..ports import {{repositories}}
+
+      class {{UseCaseName}}:
+        def __init__(
+            self,
+            {{#repositories}}
+            {{name}}: {{type}},
+            {{/repositories}}
+        ):
+            {{#repositories}}
+            self._{{name}} = {{name}}
+            {{/repositories}}
+
+        async def execute(
+            self,
+            {{#parameters}}
+            {{name}}: {{type}},
+            {{/parameters}}
+        ) -> {{return_type}}:
+            """Execute the use case."""
+
+            # 1. Validate input
+            {{input_validation}}
+
+            # 2. Fetch domain objects
+            {{#domain_operations}}
+            {{variable}} = await self._{{repository}}.{{method}}({{parameters}})
+            {{/domain_operations}}
+
+            # 3. Execute business logic
+            {{business_logic}}
+
+            # 4. Persist changes
+            {{#persistence_operations}}
+            await self._{{repository}}.{{method}}({{parameters}})
+            {{/persistence_operations}}
+
+            # 5. Return result
+            return {{return_statement}}
+
+  # APPLICATION LAYER - Ports (Abstract Base Classes)
+  application_port:
+    template: |
+      # app/application/ports/{{port_name}}.py
+      from abc import ABC, abstractmethod
+      from typing import Optional, List
+
+      from ...domain.entities import {{entities}}
+
+      class {{PortName}}(ABC):
+        {{#methods}}
+        @abstractmethod
+        async def {{name}}(
+            self,
+            {{#parameters}}
+            {{name}}: {{type}},
+            {{/parameters}}
+        ) -> {{return_type}}:
+            """{{description}}"""
+            pass
+        {{/methods}}
+
+  # INFRASTRUCTURE LAYER - Repository Adapters
+  infrastructure_repository:
+    template: |
+      # app/infrastructure/repositories/{{repository_name}}.py
+      from typing import Optional, List
+      from sqlalchemy.ext.asyncio import AsyncSession
+      from sqlalchemy import select, update, delete
+
+      from ...domain.entities import {{entities}}
+      from ...application.ports import {{port_name}}
+      from ..database.models import {{database_models}}
+
+      class {{RepositoryName}}({{PortName}}):
+        def __init__(self, db: AsyncSession):
+            self._db = db
+
+        {{#methods}}
+        async def {{name}}(
+            self,
+            {{#parameters}}
+            {{name}}: {{type}},
+            {{/parameters}}
+        ) -> {{return_type}}:
+            {{#if is_find}}
+            stmt = select({{DatabaseModel}}).where({{where_conditions}})
+            result = await self._db.execute(stmt)
+            data = result.scalar_one_or_none()
+
+            if not data:
+                return None
+
+            return {{EntityName}}.create({
+                'id': data.id,
+                {{#properties}}
+                '{{name}}': data.{{name}},
+                {{/properties}}
+            })
+            {{/if}}
+
+            {{#if is_save}}
+            primitives = {{entity_param}}.to_primitives()
+
+            {{#if is_update}}
+            stmt = (
+                update({{DatabaseModel}})
+                .where({{DatabaseModel}}.id == primitives['id'])
+                .values(**primitives)
+            )
+            {{else}}
+            db_model = {{DatabaseModel}}(**primitives)
+            self._db.add(db_model)
+            {{/if}}
+
+            await self._db.commit()
+            {{/if}}
+
+            {{#if is_delete}}
+            stmt = delete({{DatabaseModel}}).where({{DatabaseModel}}.id == {{id_param}})
+            await self._db.execute(stmt)
+            await self._db.commit()
+            {{/if}}
+        {{/methods}}
+
+  # API LAYER - FastAPI Routers
+  api_router:
+    template: |
+      # app/api/routers/{{router_name}}.py
+      from typing import List
+      from fastapi import APIRouter, Depends, HTTPException, status
+      from fastapi.responses import JSONResponse
+
+      from ...application.use_cases import {{use_cases}}
+      from ..dependencies import {{dependencies}}
+      from ..schemas import {{schemas}}
+
+      router = APIRouter(prefix="/{{resource_name}}", tags=["{{resource_name}}"])
+
+      {{#endpoints}}
+      @router.{{http_method}}("{{path}}")
+      async def {{function_name}}(
+          {{#path_parameters}}
+          {{name}}: {{type}},
+          {{/path_parameters}}
+          {{#if request_body}}
+          {{request_body_name}}: {{RequestBodySchema}},
+          {{/if}}
+          {{#dependencies}}
+          {{name}}: {{type}} = Depends({{dependency_function}}),
+          {{/dependencies}}
+      ) -> {{ResponseSchema}}:
+          """{{description}}"""
+          try:
+              {{#if is_command}}
+              await {{use_case}}.execute(
+                  {{#parameters}}
+                  {{parameter_mapping}},
+                  {{/parameters}}
+              )
+              return JSONResponse(
+                  content={"message": "{{success_message}}"},
+                  status_code=status.HTTP_{{success_status_code}}
+              )
+              {{/if}}
+
+              {{#if is_query}}
+              result = await {{use_case}}.execute({{parameters}})
+              {{#if is_list}}
+              return [{{ResponseSchema}}.from_entity(item) for item in result]
+              {{else}}
+              return {{ResponseSchema}}.from_entity(result)
+              {{/if}}
+              {{/if}}
+
+          except {{DomainException}} as e:
+              raise HTTPException(
+                  status_code=status.HTTP_400_BAD_REQUEST,
+                  detail=str(e)
+              )
+          except {{NotFoundError}} as e:
+              raise HTTPException(
+                  status_code=status.HTTP_404_NOT_FOUND,
+                  detail=str(e)
+              )
+          except Exception as e:
+              raise HTTPException(
+                  status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                  detail="Internal server error"
+              )
+      {{/endpoints}}
+
+  # API LAYER - Pydantic Schemas
+  api_schema:
+    template: |
+      # app/api/schemas/{{schema_name}}.py
+      from typing import Optional, List
+      from pydantic import BaseModel, Field, ConfigDict
+      from datetime import datetime
+
+      from ...domain.entities import {{entities}}
+
+      class {{SchemaName}}Base(BaseModel):
+          {{#base_fields}}
+          {{name}}: {{type}} = Field({{field_config}})
+          {{/base_fields}}
+
+      class {{SchemaName}}Create({{SchemaName}}Base):
+          {{#create_only_fields}}
+          {{name}}: {{type}} = Field({{field_config}})
+          {{/create_only_fields}}
+
+      class {{SchemaName}}Update(BaseModel):
+          {{#update_fields}}
+          {{name}}: Optional[{{type}}] = Field(default=None, {{field_config}})
+          {{/update_fields}}
+
+      class {{SchemaName}}Response({{SchemaName}}Base):
+          model_config = ConfigDict(from_attributes=True)
+
+          id: str
+          {{#response_only_fields}}
+          {{name}}: {{type}}
+          {{/response_only_fields}}
+          created_at: datetime
+          updated_at: datetime
+
+          @classmethod
+          def from_entity(cls, entity: {{EntityName}}) -> '{{SchemaName}}Response':
+              primitives = entity.to_primitives()
+              return cls(**primitives)
+
+  # DATABASE LAYER - SQLAlchemy Models
+  database_model:
+    template: |
+      # app/infrastructure/database/models/{{model_name}}.py
+      from datetime import datetime
+      from sqlalchemy import Column, String, DateTime, {{additional_imports}}
+      from sqlalchemy.sql import func
+
+      from ..base import Base
+
+      class {{ModelName}}(Base):
+          __tablename__ = "{{table_name}}"
+
+          id = Column(String, primary_key=True, index=True)
+          {{#columns}}
+          {{name}} = Column({{sql_type}}, {{column_config}})
+          {{/columns}}
+          created_at = Column(DateTime(timezone=True), server_default=func.now())
+          updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+          {{#relationships}}
+          {{name}} = {{relationship_config}}
+          {{/relationships}}
+
+# Dependency Injection Configuration
+dependency_injection:
+  template: |
+    # app/api/dependencies.py
+    from typing import AsyncGenerator
+    from sqlalchemy.ext.asyncio import AsyncSession
+
+    from ..infrastructure.database.session import get_async_session
+    from ..infrastructure.repositories import {{repositories}}
+    from ..application.use_cases import {{use_cases}}
+
+    # Database dependency
+    async def get_db() -> AsyncGenerator[AsyncSession, None]:
+        async with get_async_session() as db:
+            yield db
+
+    # Repository dependencies
+    {{#repositories}}
+    async def get_{{repository_name}}(
+        db: AsyncSession = Depends(get_db)
+    ) -> {{RepositoryClass}}:
+        return {{RepositoryClass}}(db)
+    {{/repositories}}
+
+    # Use case dependencies
+    {{#use_cases}}
+    async def get_{{use_case_name}}(
+        {{#dependencies}}
+        {{name}}: {{type}} = Depends(get_{{dependency_name}}),
+        {{/dependencies}}
+    ) -> {{UseCaseClass}}:
+        return {{UseCaseClass}}({{dependency_params}})
+    {{/use_cases}}
+
+# Testing Templates
+testing_templates:
+
+  domain_entity_test:
+    template: |
+      # tests/domain/entities/test_{{entity_name}}.py
+      import pytest
+      from app.domain.entities.{{entity_name}} import {{EntityName}}
+      from app.domain.value_objects import {{value_objects}}
+
+      class Test{{EntityName}}:
+          def test_create_valid_{{entity_name}}(self):
+              primitives = {
+                  'id': 'test-id',
+                  {{#test_properties}}
+                  '{{name}}': {{test_value}},
+                  {{/test_properties}}
+              }
+
+              {{entity_name}} = {{EntityName}}.create(primitives)
+
+              assert isinstance({{entity_name}}, {{EntityName}})
+              assert {{entity_name}}.to_primitives() == primitives
+
+          {{#domain_methods}}
+          def test_{{name}}_{{test_scenario}}(self):
+              # Arrange
+              {{entity_name}} = {{EntityName}}.create({
+                  {{test_setup}}
+              })
+
+              # Act
+              {{#if returns_value}}
+              result = {{entity_name}}.{{name}}({{test_parameters}})
+              {{else}}
+              {{entity_name}}.{{name}}({{test_parameters}})
+              {{/if}}
+
+              # Assert
+              {{test_assertions}}
+          {{/domain_methods}}
+
+  use_case_test:
+    template: |
+      # tests/application/use_cases/test_{{use_case_name}}.py
+      import pytest
+      from unittest.mock import Mock, AsyncMock
+
+      from app.application.use_cases.{{use_case_name}} import {{UseCaseName}}
+
+      @pytest.mark.asyncio
+      class Test{{UseCaseName}}:
+          def setup_method(self):
+              {{#mock_repositories}}
+              self.{{name}} = Mock()
+              {{/mock_repositories}}
+
+              self.use_case = {{UseCaseName}}(
+                  {{mock_repository_params}}
+              )
+
+          {{#test_cases}}
+          async def test_{{test_name}}(self):
+              # Arrange
+              {{setup_mocks}}
+
+              # Act
+              {{#if returns_value}}
+              result = await self.use_case.execute({{test_parameters}})
+              {{else}}
+              await self.use_case.execute({{test_parameters}})
+              {{/if}}
+
+              # Assert
+              {{assertions}}
+          {{/test_cases}}
+
+# Configuration Files
+config_files:
+
+  requirements_txt:
+    template: |
+      fastapi==0.104.0
+      uvicorn[standard]==0.24.0
+      sqlalchemy[asyncio]==2.0.23
+      alembic==1.12.1
+      asyncpg==0.29.0
+      pydantic==2.5.0
+      python-jose[cryptography]==3.3.0
+      passlib[bcrypt]==1.7.4
+      python-multipart==0.0.6
+
+  pyproject_toml:
+    template: |
+      [build-system]
+      requires = ["hatchling"]
+      build-backend = "hatchling.build"
+
+      [project]
+      name = "{{project_name}}"
+      version = "0.1.0"
+      description = "Clean Architecture FastAPI application"
+      dependencies = [
+          "fastapi>=0.104.0",
+          "uvicorn[standard]>=0.24.0",
+          "sqlalchemy[asyncio]>=2.0.23",
+          "alembic>=1.12.1",
+          "asyncpg>=0.29.0",
+          "pydantic>=2.5.0",
+      ]
+
+      [project.optional-dependencies]
+      test = [
+          "pytest>=7.4.0",
+          "pytest-asyncio>=0.21.0",
+          "httpx>=0.25.0",
+          "pytest-cov>=4.1.0",
+      ]
+      dev = [
+          "black>=23.0.0",
+          "ruff>=0.1.0",
+          "mypy>=1.7.0",
+      ]
+
+  alembic_ini:
+    template: |
+      [alembic]
+      script_location = alembic
+      prepend_sys_path = .
+      version_path_separator = os
+      sqlalchemy.url = postgresql+asyncpg://user:pass@localhost/dbname
+
+      [post_write_hooks]
+      hooks = black
+      black.type = console_scripts
+      black.entrypoint = black
+      black.options = -l 79 REVISION_SCRIPT_FILENAME
+
+# Example Usage
+example_usage:
+  description: "Complete example of Clean Architecture with FastAPI"
+
+  entities:
+    - name: "User"
+      properties:
+        - name: "email"
+          type: "Email"
+          is_value_object: true
+        - name: "name"
+          type: "UserName"
+          is_value_object: true
+      methods:
+        - name: "change_email"
+          parameters: "new_email: Email"
+          return_type: "None"
+          business_logic: "self.email = new_email"
+
+  use_cases:
+    - name: "UpdateUserEmail"
+      repositories:
+        - name: "user_repository"
+          type: "UserRepositoryPort"
+      parameters:
+        - name: "user_id"
+          type: "str"
+        - name: "new_email"
+          type: "str"
+      return_type: "None"
+
+  api_endpoints:
+    - path: "/users/{user_id}/email"
+      method: "put"
+      function_name: "update_user_email"
+      use_case: "UpdateUserEmail"
+      is_command: true
+      success_message: "Email updated successfully"

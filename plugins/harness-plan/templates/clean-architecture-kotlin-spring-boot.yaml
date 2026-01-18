@@ -1,0 +1,652 @@
+# Clean Architecture Template para Kotlin + Spring Boot
+# Template para generar estructura completa de Clean Architecture en proyectos Spring Boot
+
+project_type: "api-backend"
+language: "kotlin"
+framework: "spring-boot"
+architecture_pattern: "clean_hexagonal"
+
+directory_structure:
+  src/main/kotlin:
+    domain:
+      - "entities/"
+      - "valueobjects/"
+      - "domainservices/"
+      - "domainevents/"
+      - "specifications/"
+    application:
+      - "usecases/"
+      - "commands/"
+      - "queries/"
+      - "ports/"
+      - "dto/"
+    infrastructure:
+      - "adapters/"
+      - "repositories/"
+      - "externalservices/"
+      - "database/"
+      - "config/"
+    presentation:
+      - "controllers/"
+      - "dto/"
+      - "middleware/"
+      - "config/"
+
+# Templates de código por capa
+code_templates:
+
+  # DOMAIN LAYER - Entities
+  domain_entity:
+    template: |
+      // src/main/kotlin/domain/entities/{{EntityName}}.kt
+      package {{package}}.domain.entities
+
+      import {{package}}.domain.valueobjects.*
+
+      data class {{EntityName}}(
+          val id: {{EntityName}}Id,
+          {{#properties}}
+          val {{name}}: {{type}},
+          {{/properties}}
+      ) {
+          {{#methods}}
+          fun {{name}}({{parameters}}): {{return_type}} {
+              // Domain business logic here
+              {{business_logic}}
+          }
+          {{/methods}}
+
+          companion object {
+              fun create(primitives: {{EntityName}}Primitives): {{EntityName}} {
+                  return {{EntityName}}(
+                      id = {{EntityName}}Id(primitives.id),
+                      {{#properties}}
+                      {{name}} = {{#if is_value_object}}{{Type}}(primitives.{{name}}){{else}}primitives.{{name}}{{/if}},
+                      {{/properties}}
+                  )
+              }
+          }
+
+          fun toPrimitives(): {{EntityName}}Primitives {
+              return {{EntityName}}Primitives(
+                  id = id.value,
+                  {{#properties}}
+                  {{name}} = {{#if is_value_object}}{{name}}.value{{else}}{{name}}{{/if}},
+                  {{/properties}}
+              )
+          }
+      }
+
+      data class {{EntityName}}Primitives(
+          val id: String,
+          {{#properties}}
+          val {{name}}: {{primitive_type}},
+          {{/properties}}
+      )
+
+  # DOMAIN LAYER - Value Objects
+  domain_value_object:
+    template: |
+      // src/main/kotlin/domain/valueobjects/{{ValueObjectName}}.kt
+      package {{package}}.domain.valueobjects
+
+      @JvmInline
+      value class {{ValueObjectName}}(val value: {{primitive_type}}) {
+          init {
+              validate(value)
+          }
+
+          private fun validate(value: {{primitive_type}}) {
+              {{#validations}}
+              if ({{condition}}) {
+                  throw IllegalArgumentException("{{error_message}}")
+              }
+              {{/validations}}
+          }
+
+          override fun toString(): String = value.toString()
+      }
+
+  # APPLICATION LAYER - Use Cases
+  application_use_case:
+    template: |
+      // src/main/kotlin/application/usecases/{{UseCaseName}}.kt
+      package {{package}}.application.usecases
+
+      import org.springframework.stereotype.Component
+      import org.springframework.transaction.annotation.Transactional
+      import {{package}}.domain.entities.*
+      import {{package}}.application.ports.*
+
+      @Component
+      class {{UseCaseName}}(
+          {{#repositories}}
+          private val {{name}}: {{type}},
+          {{/repositories}}
+      ) {
+          @Transactional
+          suspend fun execute(
+              {{#parameters}}
+              {{name}}: {{type}},
+              {{/parameters}}
+          ): {{return_type}} {
+              // 1. Validate input
+              {{input_validation}}
+
+              // 2. Fetch domain objects
+              {{#domain_operations}}
+              val {{variable}} = {{repository}}.{{method}}({{parameters}})
+              {{/domain_operations}}
+
+              // 3. Execute business logic
+              {{business_logic}}
+
+              // 4. Persist changes
+              {{#persistence_operations}}
+              {{repository}}.{{method}}({{parameters}})
+              {{/persistence_operations}}
+
+              // 5. Return result
+              return {{return_statement}}
+          }
+      }
+
+  # APPLICATION LAYER - Ports (Interfaces)
+  application_port:
+    template: |
+      // src/main/kotlin/application/ports/{{PortName}}.kt
+      package {{package}}.application.ports
+
+      import {{package}}.domain.entities.*
+
+      interface {{PortName}} {
+          {{#methods}}
+          suspend fun {{name}}(
+              {{#parameters}}
+              {{name}}: {{type}},
+              {{/parameters}}
+          ): {{return_type}}
+          {{/methods}}
+      }
+
+  # INFRASTRUCTURE LAYER - Repository Adapters
+  infrastructure_repository:
+    template: |
+      // src/main/kotlin/infrastructure/repositories/{{RepositoryName}}.kt
+      package {{package}}.infrastructure.repositories
+
+      import org.springframework.stereotype.Repository
+      import org.springframework.data.jpa.repository.JpaRepository
+      import org.springframework.data.jpa.repository.Query
+      import kotlinx.coroutines.Dispatchers
+      import kotlinx.coroutines.withContext
+
+      import {{package}}.domain.entities.*
+      import {{package}}.application.ports.{{PortName}}
+      import {{package}}.infrastructure.database.entities.{{JpaEntityName}}
+
+      @Repository
+      class {{RepositoryName}}(
+          private val jpaRepository: {{JpaRepositoryName}}
+      ) : {{PortName}} {
+
+          {{#methods}}
+          override suspend fun {{name}}(
+              {{#parameters}}
+              {{name}}: {{type}},
+              {{/parameters}}
+          ): {{return_type}} = withContext(Dispatchers.IO) {
+              {{#if is_find}}
+              val entity = jpaRepository.{{jpa_method}}({{jpa_parameters}})
+                  ?: return@withContext null
+
+              {{EntityName}}.create({{EntityName}}Primitives(
+                  id = entity.id,
+                  {{#properties}}
+                  {{name}} = entity.{{name}},
+                  {{/properties}}
+              ))
+              {{/if}}
+
+              {{#if is_save}}
+              val primitives = {{entity_param}}.toPrimitives()
+              val jpaEntity = {{JpaEntityName}}(
+                  id = primitives.id,
+                  {{#properties}}
+                  {{name}} = primitives.{{name}},
+                  {{/properties}}
+              )
+              jpaRepository.save(jpaEntity)
+              {{/if}}
+
+              {{#if is_delete}}
+              jpaRepository.deleteById({{id_param}})
+              {{/if}}
+          }
+          {{/methods}}
+      }
+
+      interface {{JpaRepositoryName}} : JpaRepository<{{JpaEntityName}}, String> {
+          {{#custom_queries}}
+          @Query("{{query}}")
+          fun {{method_name}}({{parameters}}): {{return_type}}
+          {{/custom_queries}}
+      }
+
+  # PRESENTATION LAYER - REST Controllers
+  presentation_controller:
+    template: |
+      // src/main/kotlin/presentation/controllers/{{ControllerName}}.kt
+      package {{package}}.presentation.controllers
+
+      import org.springframework.web.bind.annotation.*
+      import org.springframework.http.ResponseEntity
+      import org.springframework.http.HttpStatus
+      import org.springframework.validation.annotation.Validated
+      import jakarta.validation.Valid
+
+      import {{package}}.application.usecases.*
+      import {{package}}.presentation.dto.*
+
+      @RestController
+      @RequestMapping("/api/{{resource_name}}")
+      @Validated
+      class {{ControllerName}}(
+          {{#use_cases}}
+          private val {{name}}: {{type}},
+          {{/use_cases}}
+      ) {
+          {{#endpoints}}
+          @{{HttpMethod}}("{{path}}")
+          suspend fun {{functionName}}(
+              {{#path_variables}}
+              @PathVariable {{name}}: {{type}},
+              {{/path_variables}}
+              {{#if request_body}}
+              @Valid @RequestBody {{request_body_name}}: {{RequestBodyDto}},
+              {{/if}}
+          ): ResponseEntity<{{ResponseDto}}> {
+              return try {
+                  {{#if is_command}}
+                  {{use_case}}.execute(
+                      {{#parameters}}
+                      {{parameter_mapping}},
+                      {{/parameters}}
+                  )
+                  ResponseEntity.status(HttpStatus.{{success_status}})
+                      .body({{ResponseDto}}("{{success_message}}"))
+                  {{/if}}
+
+                  {{#if is_query}}
+                  val result = {{use_case}}.execute({{parameters}})
+                  {{#if is_list}}
+                  val response = result.map { {{ResponseDto}}.fromEntity(it) }
+                  {{else}}
+                  val response = {{ResponseDto}}.fromEntity(result)
+                  {{/if}}
+                  ResponseEntity.ok(response)
+                  {{/if}}
+
+              } catch (e: {{DomainException}}) {
+                  ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                      .body({{ErrorDto}}(e.message ?: "Domain error"))
+              } catch (e: {{NotFoundException}}) {
+                  ResponseEntity.status(HttpStatus.NOT_FOUND)
+                      .body({{ErrorDto}}(e.message ?: "Resource not found"))
+              } catch (e: Exception) {
+                  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                      .body({{ErrorDto}}("Internal server error"))
+              }
+          }
+          {{/endpoints}}
+      }
+
+  # PRESENTATION LAYER - DTOs
+  presentation_dto:
+    template: |
+      // src/main/kotlin/presentation/dto/{{DtoName}}.kt
+      package {{package}}.presentation.dto
+
+      import com.fasterxml.jackson.annotation.JsonProperty
+      import jakarta.validation.constraints.*
+      import java.time.LocalDateTime
+
+      import {{package}}.domain.entities.{{EntityName}}
+
+      data class {{DtoName}}Request(
+          {{#request_fields}}
+          @field:{{validation_annotation}}
+          @JsonProperty("{{json_property}}")
+          val {{name}}: {{type}},
+          {{/request_fields}}
+      )
+
+      data class {{DtoName}}Response(
+          val id: String,
+          {{#response_fields}}
+          @JsonProperty("{{json_property}}")
+          val {{name}}: {{type}},
+          {{/response_fields}}
+          val createdAt: LocalDateTime,
+          val updatedAt: LocalDateTime
+      ) {
+          companion object {
+              fun fromEntity(entity: {{EntityName}}): {{DtoName}}Response {
+                  val primitives = entity.toPrimitives()
+                  return {{DtoName}}Response(
+                      id = primitives.id,
+                      {{#response_fields}}
+                      {{name}} = primitives.{{name}},
+                      {{/response_fields}}
+                      createdAt = primitives.createdAt,
+                      updatedAt = primitives.updatedAt
+                  )
+              }
+          }
+      }
+
+      data class {{DtoName}}Update(
+          {{#update_fields}}
+          @JsonProperty("{{json_property}}")
+          val {{name}}: {{type}}?,
+          {{/update_fields}}
+      )
+
+      data class ErrorResponse(
+          val message: String,
+          val timestamp: LocalDateTime = LocalDateTime.now()
+      )
+
+  # DATABASE LAYER - JPA Entities
+  database_jpa_entity:
+    template: |
+      // src/main/kotlin/infrastructure/database/entities/{{JpaEntityName}}.kt
+      package {{package}}.infrastructure.database.entities
+
+      import jakarta.persistence.*
+      import org.springframework.data.annotation.CreatedDate
+      import org.springframework.data.annotation.LastModifiedDate
+      import org.springframework.data.jpa.domain.support.AuditingEntityListener
+      import java.time.LocalDateTime
+
+      @Entity
+      @Table(name = "{{table_name}}")
+      @EntityListeners(AuditingEntityListener::class)
+      data class {{JpaEntityName}}(
+          @Id
+          val id: String,
+
+          {{#columns}}
+          @Column({{column_config}})
+          val {{name}}: {{type}},
+          {{/columns}}
+
+          @CreatedDate
+          @Column(name = "created_at", nullable = false, updatable = false)
+          val createdAt: LocalDateTime = LocalDateTime.now(),
+
+          @LastModifiedDate
+          @Column(name = "updated_at", nullable = false)
+          val updatedAt: LocalDateTime = LocalDateTime.now()
+      ) {
+          {{#relationships}}
+          @{{relationship_type}}({{relationship_config}})
+          {{#if is_join_column}}
+          @JoinColumn(name = "{{join_column}}")
+          {{/if}}
+          val {{name}}: {{type}}? = null
+          {{/relationships}}
+      }
+
+# Spring Boot Configuration
+spring_configuration:
+
+  application_yml:
+    template: |
+      spring:
+        application:
+          name: {{application_name}}
+
+        datasource:
+          url: jdbc:postgresql://localhost:5432/{{database_name}}
+          username: ${DB_USERNAME:{{db_user}}}
+          password: ${DB_PASSWORD:{{db_password}}}
+          driver-class-name: org.postgresql.Driver
+
+        jpa:
+          hibernate:
+            ddl-auto: validate
+          show-sql: false
+          properties:
+            hibernate:
+              dialect: org.hibernate.dialect.PostgreSQLDialect
+              format_sql: true
+
+        liquibase:
+          change-log: classpath:db/changelog/db.changelog-master.xml
+
+        web:
+          cors:
+            allowed-origins: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+
+      server:
+        port: 8080
+        servlet:
+          context-path: /api
+
+      logging:
+        level:
+          {{package}}: DEBUG
+          org.springframework.web: DEBUG
+
+  main_class:
+    template: |
+      // src/main/kotlin/{{ApplicationName}}Application.kt
+      package {{package}}
+
+      import org.springframework.boot.autoconfigure.SpringBootApplication
+      import org.springframework.boot.runApplication
+      import org.springframework.data.jpa.repository.config.EnableJpaAuditing
+      import org.springframework.transaction.annotation.EnableTransactionManagement
+
+      @SpringBootApplication
+      @EnableJpaAuditing
+      @EnableTransactionManagement
+      class {{ApplicationName}}Application
+
+      fun main(args: Array<String>) {
+          runApplication<{{ApplicationName}}Application>(*args)
+      }
+
+# Testing Templates
+testing_templates:
+
+  domain_entity_test:
+    template: |
+      // src/test/kotlin/domain/entities/{{EntityName}}Test.kt
+      package {{package}}.domain.entities
+
+      import org.junit.jupiter.api.Test
+      import org.junit.jupiter.api.Assertions.*
+      import org.junit.jupiter.api.assertThrows
+
+      class {{EntityName}}Test {
+          @Test
+          fun `should create valid {{entity_name}}`() {
+              val primitives = {{EntityName}}Primitives(
+                  id = "test-id",
+                  {{#test_properties}}
+                  {{name}} = {{test_value}},
+                  {{/test_properties}}
+              )
+
+              val {{entity_name}} = {{EntityName}}.create(primitives)
+
+              assertNotNull({{entity_name}})
+              assertEquals(primitives, {{entity_name}}.toPrimitives())
+          }
+
+          {{#domain_methods}}
+          @Test
+          fun `should {{test_description}}`() {
+              // Arrange
+              val {{entity_name}} = {{EntityName}}.create({{EntityName}}Primitives(
+                  {{test_setup}}
+              ))
+
+              // Act
+              {{#if returns_value}}
+              val result = {{entity_name}}.{{name}}({{test_parameters}})
+              {{else}}
+              {{entity_name}}.{{name}}({{test_parameters}})
+              {{/if}}
+
+              // Assert
+              {{test_assertions}}
+          }
+          {{/domain_methods}}
+      }
+
+  use_case_test:
+    template: |
+      // src/test/kotlin/application/usecases/{{UseCaseName}}Test.kt
+      package {{package}}.application.usecases
+
+      import kotlinx.coroutines.test.runTest
+      import org.junit.jupiter.api.Test
+      import org.junit.jupiter.api.BeforeEach
+      import org.junit.jupiter.api.Assertions.*
+      import org.mockito.kotlin.*
+
+      class {{UseCaseName}}Test {
+          {{#mock_repositories}}
+          private lateinit var {{name}}: {{type}}
+          {{/mock_repositories}}
+          private lateinit var useCase: {{UseCaseName}}
+
+          @BeforeEach
+          fun setUp() {
+              {{#mock_repositories}}
+              {{name}} = mock()
+              {{/mock_repositories}}
+
+              useCase = {{UseCaseName}}(
+                  {{mock_repository_params}}
+              )
+          }
+
+          {{#test_cases}}
+          @Test
+          fun `should {{description}}`() = runTest {
+              // Arrange
+              {{setup_mocks}}
+
+              // Act
+              {{#if returns_value}}
+              val result = useCase.execute({{test_parameters}})
+              {{else}}
+              useCase.execute({{test_parameters}})
+              {{/if}}
+
+              // Assert
+              {{assertions}}
+          }
+          {{/test_cases}}
+      }
+
+# Build Configuration
+build_configuration:
+
+  build_gradle_kts:
+    template: |
+      import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+      plugins {
+          id("org.springframework.boot") version "3.2.0"
+          id("io.spring.dependency-management") version "1.1.4"
+          kotlin("jvm") version "1.9.20"
+          kotlin("plugin.spring") version "1.9.20"
+          kotlin("plugin.jpa") version "1.9.20"
+      }
+
+      group = "{{group_id}}"
+      version = "0.0.1-SNAPSHOT"
+
+      java {
+          sourceCompatibility = JavaVersion.VERSION_17
+      }
+
+      repositories {
+          mavenCentral()
+      }
+
+      dependencies {
+          implementation("org.springframework.boot:spring-boot-starter-web")
+          implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+          implementation("org.springframework.boot:spring-boot-starter-validation")
+          implementation("org.springframework.boot:spring-boot-starter-actuator")
+          implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+          implementation("org.jetbrains.kotlin:kotlin-reflect")
+          implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+          implementation("org.liquibase:liquibase-core")
+
+          runtimeOnly("org.postgresql:postgresql")
+
+          testImplementation("org.springframework.boot:spring-boot-starter-test")
+          testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
+          testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
+          testImplementation("org.testcontainers:postgresql")
+          testImplementation("org.testcontainers:junit-jupiter")
+      }
+
+      tasks.withType<KotlinCompile> {
+          kotlinOptions {
+              freeCompilerArgs += "-Xjsr305=strict"
+              jvmTarget = "17"
+          }
+      }
+
+      tasks.withType<Test> {
+          useJUnitPlatform()
+      }
+
+# Example Usage
+example_usage:
+  description: "Complete example of Clean Architecture with Kotlin Spring Boot"
+
+  entities:
+    - name: "User"
+      properties:
+        - name: "email"
+          type: "Email"
+          is_value_object: true
+        - name: "name"
+          type: "UserName"
+          is_value_object: true
+      methods:
+        - name: "changeEmail"
+          parameters: "newEmail: Email"
+          return_type: "Unit"
+          business_logic: "// Update email logic here"
+
+  use_cases:
+    - name: "UpdateUserEmail"
+      repositories:
+        - name: "userRepository"
+          type: "UserRepository"
+      parameters:
+        - name: "userId"
+          type: "String"
+        - name: "newEmail"
+          type: "String"
+      return_type: "Unit"
+
+  endpoints:
+    - path: "/users/{userId}/email"
+      method: "PUT"
+      function_name: "updateUserEmail"
+      use_case: "UpdateUserEmail"
+      is_command: true
+      success_message: "Email updated successfully"

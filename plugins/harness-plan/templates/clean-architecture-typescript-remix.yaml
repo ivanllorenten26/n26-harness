@@ -1,0 +1,530 @@
+# Clean Architecture Template para TypeScript + Remix
+# Template para generar estructura completa de Clean Architecture en proyectos Remix
+
+project_type: "web-fullstack"
+language: "typescript"
+framework: "remix"
+architecture_pattern: "clean_hexagonal"
+
+directory_structure:
+  src:
+    domain:
+      - "entities/"
+      - "value-objects/"
+      - "domain-services/"
+      - "domain-events/"
+      - "specifications/"
+    application:
+      - "use-cases/"
+      - "commands/"
+      - "queries/"
+      - "ports/"
+      - "dto/"
+    infrastructure:
+      - "adapters/"
+      - "repositories/"
+      - "external-services/"
+      - "database/"
+      - "config/"
+    presentation:
+      - "routes/"
+      - "components/"
+      - "hooks/"
+      - "utils/"
+
+# Templates de código por capa
+code_templates:
+
+  # DOMAIN LAYER - Entities
+  domain_entity:
+    template: |
+      // src/domain/entities/{{entity_name}}.ts
+      import { {{value_objects}} } from '../value-objects';
+
+      export class {{EntityName}} {
+        constructor(
+          private readonly id: {{EntityName}}Id,
+          {{#properties}}
+          private {{name}}: {{type}},
+          {{/properties}}
+        ) {}
+
+        {{#methods}}
+        {{name}}({{parameters}}): {{return_type}} {
+          // Domain business logic here
+          {{business_logic}}
+        }
+        {{/methods}}
+
+        // Factory method
+        static create(primitives: {{EntityName}}Primitives): {{EntityName}} {
+          return new {{EntityName}}(
+            new {{EntityName}}Id(primitives.id),
+            {{#properties}}
+            {{#if is_value_object}}
+            new {{Type}}(primitives.{{name}}),
+            {{else}}
+            primitives.{{name}},
+            {{/if}}
+            {{/properties}}
+          );
+        }
+
+        // Serialization
+        toPrimitives(): {{EntityName}}Primitives {
+          return {
+            id: this.id.value,
+            {{#properties}}
+            {{name}}: {{#if is_value_object}}this.{{name}}.value{{else}}this.{{name}}{{/if}},
+            {{/properties}}
+          };
+        }
+      }
+
+      export interface {{EntityName}}Primitives {
+        id: string;
+        {{#properties}}
+        {{name}}: {{primitive_type}};
+        {{/properties}}
+      }
+
+  # DOMAIN LAYER - Value Objects
+  domain_value_object:
+    template: |
+      // src/domain/value-objects/{{value_object_name}}.ts
+      export class {{ValueObjectName}} {
+        constructor(private readonly _value: {{primitive_type}}) {
+          this.validate(_value);
+        }
+
+        get value(): {{primitive_type}} {
+          return this._value;
+        }
+
+        private validate(value: {{primitive_type}}): void {
+          {{#validations}}
+          if ({{condition}}) {
+            throw new Error('{{error_message}}');
+          }
+          {{/validations}}
+        }
+
+        equals(other: {{ValueObjectName}}): boolean {
+          return this._value === other._value;
+        }
+
+        toString(): string {
+          return this._value.toString();
+        }
+      }
+
+  # APPLICATION LAYER - Use Cases
+  application_use_case:
+    template: |
+      // src/application/use-cases/{{use_case_name}}.ts
+      import { {{entities}} } from '../../domain/entities';
+      import { {{repositories}} } from '../ports';
+
+      export class {{UseCaseName}} {
+        constructor(
+          {{#repositories}}
+          private readonly {{name}}: {{type}},
+          {{/repositories}}
+        ) {}
+
+        async execute({{#parameters}}{{name}}: {{type}}{{#unless @last}}, {{/unless}}{{/parameters}}): Promise<{{return_type}}> {
+          // 1. Validate input
+          {{input_validation}}
+
+          // 2. Fetch domain objects
+          {{#domain_operations}}
+          const {{variable}} = await this.{{repository}}.{{method}}({{parameters}});
+          {{/domain_operations}}
+
+          // 3. Execute business logic
+          {{business_logic}}
+
+          // 4. Persist changes
+          {{#persistence_operations}}
+          await this.{{repository}}.{{method}}({{parameters}});
+          {{/persistence_operations}}
+
+          // 5. Return result
+          return {{return_statement}};
+        }
+      }
+
+  # APPLICATION LAYER - Ports (Interfaces)
+  application_port:
+    template: |
+      // src/application/ports/{{port_name}}.ts
+      import { {{entities}} } from '../../domain/entities';
+
+      export interface {{PortName}} {
+        {{#methods}}
+        {{name}}({{#parameters}}{{name}}: {{type}}{{#unless @last}}, {{/unless}}{{/parameters}}): Promise<{{return_type}}>;
+        {{/methods}}
+      }
+
+  # INFRASTRUCTURE LAYER - Repository Adapters
+  infrastructure_repository:
+    template: |
+      // src/infrastructure/repositories/{{repository_name}}.ts
+      import { PrismaClient } from '@prisma/client';
+      import { {{entities}} } from '../../domain/entities';
+      import { {{port_name}} } from '../../application/ports';
+
+      export class {{RepositoryName}} implements {{PortName}} {
+        constructor(private readonly prisma: PrismaClient) {}
+
+        {{#methods}}
+        async {{name}}({{#parameters}}{{name}}: {{type}}{{#unless @last}}, {{/unless}}{{/parameters}}): Promise<{{return_type}}> {
+          {{#if is_find}}
+          const data = await this.prisma.{{table}}.{{prisma_method}}({
+            where: { {{where_conditions}} }
+          });
+
+          if (!data) {
+            return null;
+          }
+
+          return {{EntityName}}.create(data);
+          {{/if}}
+
+          {{#if is_save}}
+          const primitives = {{entity_param}}.toPrimitives();
+
+          await this.prisma.{{table}}.{{prisma_method}}({
+            {{#if is_update}}
+            where: { id: primitives.id },
+            {{/if}}
+            data: {
+              {{#properties}}
+              {{name}}: primitives.{{name}},
+              {{/properties}}
+            }
+          });
+          {{/if}}
+        }
+        {{/methods}}
+      }
+
+  # PRESENTATION LAYER - Remix Routes
+  presentation_remix_route:
+    template: |
+      // app/routes/{{route_path}}.tsx
+      import { json, redirect } from "@remix-run/node";
+      import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
+      import { useLoaderData, Form, useActionData } from "@remix-run/react";
+      import { {{use_cases}} } from "~/src/application/use-cases";
+      import { container } from "~/src/infrastructure/config/container";
+
+      // QUERY - Loader for data fetching
+      export async function loader({ params, request }: LoaderFunctionArgs) {
+        const {{query_use_case}} = container.get({{QueryUseCaseName}});
+
+        try {
+          const {{data}} = await {{query_use_case}}.execute({{query_parameters}});
+
+          return json({
+            {{data}}: {{data}}.toPrimitives(),
+            success: true
+          });
+        } catch (error) {
+          throw new Response("{{error_message}}", { status: {{error_status}} });
+        }
+      }
+
+      // COMMAND - Action for mutations
+      export async function action({ params, request }: ActionFunctionArgs) {
+        const formData = await request.formData();
+        const {{command_use_case}} = container.get({{CommandUseCaseName}});
+
+        try {
+          {{#form_fields}}
+          const {{name}} = formData.get("{{name}}") as string;
+          {{/form_fields}}
+
+          await {{command_use_case}}.execute({{command_parameters}});
+
+          return redirect("{{redirect_path}}");
+        } catch (error) {
+          return json({
+            error: error.message,
+            success: false
+          }, { status: 400 });
+        }
+      }
+
+      // COMPONENT - React component
+      export default function {{ComponentName}}() {
+        const { {{data}}, success } = useLoaderData<typeof loader>();
+        const actionData = useActionData<typeof action>();
+
+        return (
+          <div className="{{css_classes}}">
+            <h1>{{title}}</h1>
+
+            {actionData?.error && (
+              <div className="error">{actionData.error}</div>
+            )}
+
+            <Form method="post" className="{{form_css_classes}}">
+              {{#form_fields}}
+              <div className="field">
+                <label htmlFor="{{name}}">{{label}}</label>
+                <input
+                  id="{{name}}"
+                  name="{{name}}"
+                  type="{{type}}"
+                  {{#if required}}required{{/if}}
+                  {{#if default_value}}defaultValue="{{default_value}}"{{/if}}
+                />
+              </div>
+              {{/form_fields}}
+
+              <button type="submit" className="submit-button">
+                {{submit_text}}
+              </button>
+            </Form>
+
+            {{#if data}}
+            <div className="data-display">
+              {{#data_fields}}
+              <div className="field">
+                <strong>{{label}}:</strong> {{{data}}.{{field_name}}}
+              </div>
+              {{/data_fields}}
+            </div>
+            {{/if}}
+          </div>
+        );
+      }
+
+# Dependency Injection Configuration
+dependency_injection:
+  template: |
+    // src/infrastructure/config/container.ts
+    import { Container } from 'inversify';
+    import { PrismaClient } from '@prisma/client';
+
+    // Use Cases
+    import { {{use_cases}} } from '../../application/use-cases';
+
+    // Ports
+    import { {{ports}} } from '../../application/ports';
+
+    // Adapters
+    import { {{adapters}} } from '../repositories';
+
+    const container = new Container();
+
+    // Infrastructure
+    container.bind<PrismaClient>('PrismaClient').toConstantValue(new PrismaClient());
+
+    // Repositories
+    {{#repositories}}
+    container.bind<{{port_name}}>('{{port_name}}').to({{adapter_name}});
+    {{/repositories}}
+
+    // Use Cases
+    {{#use_cases}}
+    container.bind<{{name}}>({{name}}).toSelf();
+    {{/use_cases}}
+
+    export { container };
+
+# Testing Templates
+testing_templates:
+
+  domain_entity_test:
+    template: |
+      // tests/domain/entities/{{entity_name}}.test.ts
+      import { {{EntityName}} } from '../../../src/domain/entities/{{entity_name}}';
+      import { {{value_objects}} } from '../../../src/domain/value-objects';
+
+      describe('{{EntityName}}', () => {
+        describe('create', () => {
+          it('should create a valid {{entity_name}}', () => {
+            const primitives = {
+              id: 'test-id',
+              {{#test_properties}}
+              {{name}}: {{test_value}},
+              {{/test_properties}}
+            };
+
+            const {{entity_name}} = {{EntityName}}.create(primitives);
+
+            expect({{entity_name}}).toBeInstanceOf({{EntityName}});
+            expect({{entity_name}}.toPrimitives()).toEqual(primitives);
+          });
+        });
+
+        {{#domain_methods}}
+        describe('{{name}}', () => {
+          it('should {{test_description}}', () => {
+            // Arrange
+            const {{entity_name}} = {{EntityName}}.create({
+              {{test_setup}}
+            });
+
+            // Act
+            const result = {{entity_name}}.{{name}}({{test_parameters}});
+
+            // Assert
+            {{test_assertions}}
+          });
+        });
+        {{/domain_methods}}
+      });
+
+  use_case_test:
+    template: |
+      // tests/application/use-cases/{{use_case_name}}.test.ts
+      import { {{UseCaseName}} } from '../../../src/application/use-cases/{{use_case_name}}';
+      import { {{mock_repositories}} } from '../../__mocks__/repositories';
+
+      describe('{{UseCaseName}}', () => {
+        let useCase: {{UseCaseName}};
+        {{#mock_repositories}}
+        let {{name}}: jest.Mocked<{{type}}>;
+        {{/mock_repositories}}
+
+        beforeEach(() => {
+          {{#mock_repositories}}
+          {{name}} = {
+            {{#methods}}
+            {{name}}: jest.fn(),
+            {{/methods}}
+          };
+          {{/mock_repositories}}
+
+          useCase = new {{UseCaseName}}({{mock_repository_params}});
+        });
+
+        {{#test_cases}}
+        it('should {{description}}', async () => {
+          // Arrange
+          {{setup_mocks}}
+
+          // Act
+          {{#if returns_value}}
+          const result = await useCase.execute({{test_parameters}});
+          {{else}}
+          await useCase.execute({{test_parameters}});
+          {{/if}}
+
+          // Assert
+          {{assertions}}
+        });
+        {{/test_cases}}
+      });
+
+# Migration Templates
+migrations:
+  prisma_migration:
+    template: |
+      // prisma/migrations/{{timestamp}}_{{migration_name}}/migration.sql
+      {{#tables}}
+      -- Create{{TableName}} table
+      CREATE TABLE "{{table_name}}" (
+        "id" TEXT NOT NULL,
+        {{#columns}}
+        "{{name}}" {{sql_type}} {{#if not_null}}NOT NULL{{/if}},
+        {{/columns}}
+        "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updated_at" TIMESTAMP(3) NOT NULL,
+
+        CONSTRAINT "{{table_name}}_pkey" PRIMARY KEY ("id")
+      );
+
+      {{#indexes}}
+      CREATE {{#if unique}}UNIQUE {{/if}}INDEX "{{index_name}}" ON "{{table_name}}"({{columns}});
+      {{/indexes}}
+      {{/tables}}
+
+# Configuration Files
+config_files:
+
+  tsconfig:
+    template: |
+      {
+        "compilerOptions": {
+          "lib": ["DOM", "DOM.Iterable", "ES6"],
+          "isolatedModules": true,
+          "esModuleInterop": true,
+          "jsx": "react-jsx",
+          "moduleResolution": "node",
+          "resolveJsonModule": true,
+          "target": "ES2022",
+          "strict": true,
+          "allowJs": true,
+          "forceConsistentCasingInFileNames": true,
+          "baseUrl": ".",
+          "paths": {
+            "~/*": ["./app/*"]
+          },
+          "skipLibCheck": true,
+          "types": ["@remix-run/node", "vite/client"],
+          "experimentalDecorators": true,
+          "emitDecoratorMetadata": true
+        }
+      }
+
+  package_json_dependencies:
+    dependencies:
+      "@remix-run/node": "^2.0.0"
+      "@remix-run/react": "^2.0.0"
+      "@remix-run/serve": "^2.0.0"
+      "@prisma/client": "^5.0.0"
+      "inversify": "^6.0.2"
+      "reflect-metadata": "^0.1.13"
+    devDependencies:
+      "@types/node": "^20.0.0"
+      "prisma": "^5.0.0"
+      "typescript": "^5.0.0"
+      "vitest": "^1.0.0"
+      "@testing-library/react": "^13.0.0"
+      "@testing-library/jest-dom": "^6.0.0"
+
+# Example Usage
+example_usage:
+  description: "Complete example of Clean Architecture with Remix"
+
+  entities:
+    - name: "User"
+      properties:
+        - name: "email"
+          type: "Email"
+          is_value_object: true
+        - name: "name"
+          type: "UserName"
+          is_value_object: true
+      methods:
+        - name: "changeEmail"
+          parameters: "newEmail: Email"
+          return_type: "void"
+          business_logic: "this.email = newEmail;"
+
+  use_cases:
+    - name: "UpdateUserEmail"
+      repositories:
+        - name: "userRepository"
+          type: "IUserRepository"
+      parameters:
+        - name: "userId"
+          type: "string"
+        - name: "newEmail"
+          type: "string"
+      return_type: "void"
+
+  routes:
+    - path: "users.$userId.edit"
+      component_name: "EditUser"
+      query_use_case: "GetUserById"
+      command_use_case: "UpdateUserEmail"
+      form_fields:
+        - name: "email"
+          type: "email"
+          label: "Email Address"
+          required: true

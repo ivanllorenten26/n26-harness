@@ -1,0 +1,17 @@
+{
+  "name": "harness-resume",
+  "version": "3.0.0",
+  "description": "Resume work after interruption with full context recovery",
+  "author": {
+    "name": "CYLON26 Team",
+    "email": "ivan.llorente@n26.com"
+  },
+  "license": "MIT",
+  "keywords": ["resume", "recovery", "context", "interruption"],
+  "category": "development",
+  "skills": ["./skills/harness-resume.md"],
+  "metadata": {
+    "harness_version": "3.0.0",
+    "component_type": "context_recovery"
+  }
+}

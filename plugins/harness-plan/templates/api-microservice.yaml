@@ -1,0 +1,108 @@
+# Template arquitectónico para APIs y microservicios
+# Usado por /harness-plan para generar arquitectura específica
+
+project_type: "api-microservice"
+
+technology_stack:
+  backend:
+    runtime: "nodejs"
+    framework: "express"
+    language: "typescript"
+    database: "postgresql"
+    orm: "prisma"
+    testing: "jest"
+    validation: "zod"
+    authentication: "jwt"
+    documentation: "swagger"
+    rate_limiting: "express-rate-limit"
+  infrastructure:
+    deployment: "docker"
+    database_host: "postgresql"
+    monitoring: "prometheus"
+    logging: "winston"
+    caching: "redis"
+    message_queue: "redis"
+
+architecture_patterns:
+  api_design: "rest"
+  data_access: "repository-pattern"
+  business_logic: "service-layer"
+  error_handling: "global-middleware"
+  authentication: "jwt-bearer"
+  authorization: "rbac"
+
+development_environment:
+  package_manager: "npm"
+  node_version: "18+"
+  typescript_config: "strict"
+  linting: "eslint"
+  formatting: "prettier"
+  containerization: "docker"
+
+project_structure:
+  api:
+    routes: "src/routes/"
+    controllers: "src/controllers/"
+    services: "src/services/"
+    repositories: "src/repositories/"
+    models: "src/models/"
+    middleware: "src/middleware/"
+    utils: "src/utils/"
+    types: "src/types/"
+    config: "src/config/"
+    docs: "docs/"
+
+task_patterns:
+  setup_tasks:
+    - "Configurar estructura de API y dependencias"
+    - "Configurar base de datos y conexiones"
+    - "Configurar Docker y containerización"
+    - "Configurar documentación Swagger"
+
+  foundation_tasks:
+    - "Implementar sistema de autenticación JWT"
+    - "Crear middleware global (cors, rate limiting, logging)"
+    - "Configurar validación de schemas con Zod"
+    - "Implementar manejo global de errores"
+
+  feature_implementation:
+    parallel_groups:
+      - "API Endpoints (backend agent)"
+      - "Database Models y Repositories (data agent)"
+      - "Business Logic Services (backend agent)"
+      - "Testing y Documentación (devops agent)"
+
+testing_strategy:
+  unit_tests: "jest + supertest"
+  integration_tests: "jest + test database"
+  contract_tests: "pact"
+  load_tests: "artillery"
+
+deployment_strategy:
+  containerization:
+    dockerfile: "multi-stage build"
+    base_image: "node:18-alpine"
+    healthcheck: "enabled"
+  orchestration:
+    platform: "docker-compose"
+    services: ["api", "database", "redis"]
+  monitoring:
+    healthchecks: "/health endpoint"
+    metrics: "prometheus endpoints"
+    logging: "structured json"
+
+api_specifications:
+  versioning: "url path (/api/v1/)"
+  pagination: "cursor-based"
+  rate_limiting: "100 requests/minute"
+  cors: "configured for production"
+  content_type: "application/json"
+  error_format: "RFC 7807 Problem Details"
+
+security:
+  authentication: "JWT with refresh tokens"
+  authorization: "role-based access control"
+  input_validation: "zod schemas"
+  sql_injection: "prisma ORM protection"
+  rate_limiting: "express-rate-limit"
+  helmet: "security headers"
