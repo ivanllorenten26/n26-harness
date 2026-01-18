@@ -53,12 +53,12 @@ cd nuevo-proyecto/
 
 # Caso 2: Proyecto existente sin claude.md
 cd proyecto-existente/
-/harness-context-init
+/harness-context  # (funcionalidad propuesta: init)
 # → Analiza proyecto y genera claude.md personalizado
 
 # Caso 3: Proyecto con claude.md existente
 cd proyecto-con-claude-md/
-/harness-context-update
+/harness-context  # (funcionalidad propuesta: update)
 # → Sugiere mejoras al claude.md existente
 ```
 
@@ -129,8 +129,9 @@ Herramientas para validar, mantener y mejorar archivos `claude.md` existentes.
 - [ ] Linting para formato y consistencia
 - [ ] Integración con git hooks para recordatorios de actualización
 
-#### **Comandos Propuestos**
+#### **Comandos Propuestos (Futuras funcionalidades)**
 ```bash
+# Propuestas de sub-comandos para /harness-context
 /harness-context-validate    # Valida claude.md actual
 /harness-context-update      # Sugiere mejoras
 /harness-context-lint        # Linting de formato

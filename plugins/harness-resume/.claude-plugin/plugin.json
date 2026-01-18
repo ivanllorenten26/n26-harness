@@ -6,6 +6,8 @@
     "name": "Ivan Llorente",
     "email": "ivan.llorente@n26.com"
   },
+  "homepage": "https://github.com/ivanllorenten26/claude-marketplace",
+  "repository": "https://github.com/ivanllorenten26/claude-marketplace",
   "license": "MIT",
   "keywords": ["resume", "recovery", "context", "interruption"],
   "skills": ["./skills/harness-resume.md"]

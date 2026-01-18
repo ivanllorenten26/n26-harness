@@ -6,8 +6,8 @@
     "name": "Ivan Llorente",
     "email": "ivan.llorente@n26.com"
   },
-  "homepage": "https://github.com/your-org/cylon26-harness",
-  "repository": "https://github.com/your-org/cylon26-harness",
+  "homepage": "https://github.com/ivanllorenten26/claude-marketplace",
+  "repository": "https://github.com/ivanllorenten26/claude-marketplace",
   "license": "MIT",
   "keywords": ["agents", "frontend", "backend", "data", "devops", "harness"],
   "agents": [
