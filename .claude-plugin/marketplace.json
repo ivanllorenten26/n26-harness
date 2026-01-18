@@ -4,22 +4,14 @@
     "name": "Harness Development Team",
     "email": "ivan.llorente@n26.com"
   },
-  "metadata": {
-    "description": "Long-running agents harness ecosystem for autonomous development using Claude Code",
-    "version": "3.0.0",
-    "pluginRoot": "./plugins"
-  },
   "plugins": [
     {
       "name": "harness-init",
       "source": "./plugins/harness-init",
       "description": "Initialize harness projects from PDRs with complete infrastructure setup",
       "version": "3.0.0",
-      "author": {
-        "name": "Harness Development Team"
-      },
+      "author": { "name": "Harness Development Team" },
       "keywords": ["harness", "initialization", "pdr", "autonomous"],
-      "category": "development",
       "license": "MIT"
     },
     {
@@ -27,11 +19,8 @@
       "source": "./plugins/harness-pdr",
       "description": "Create comprehensive Product Requirement Documents for harness projects",
       "version": "3.0.0",
-      "author": {
-        "name": "Harness Development Team"
-      },
+      "author": { "name": "Harness Development Team" },
       "keywords": ["pdr", "requirements", "documentation", "harness"],
-      "category": "documentation",
       "license": "MIT"
     },
     {
@@ -39,11 +28,8 @@
       "source": "./plugins/harness-plan",
       "description": "Generate comprehensive architectural plans and YAML configurations",
       "version": "3.0.0",
-      "author": {
-        "name": "Harness Development Team"
-      },
+      "author": { "name": "Harness Development Team" },
       "keywords": ["architecture", "planning", "yaml", "design"],
-      "category": "development",
       "license": "MIT"
     },
     {
@@ -51,11 +37,8 @@
       "source": "./plugins/harness-implement",
       "description": "Execute parallel implementation with specialized agents and context injection",
       "version": "3.0.0",
-      "author": {
-        "name": "Harness Development Team"
-      },
+      "author": { "name": "Harness Development Team" },
       "keywords": ["implementation", "agents", "parallel", "development"],
-      "category": "development",
       "license": "MIT"
     },
     {
@@ -63,11 +46,8 @@
       "source": "./plugins/harness-context",
       "description": "Generate and manage claude.md files with project-specific context",
       "version": "3.0.0",
-      "author": {
-        "name": "Harness Development Team"
-      },
+      "author": { "name": "Harness Development Team" },
       "keywords": ["context", "claude-md", "project", "templates"],
-      "category": "development",
       "license": "MIT"
     },
     {
@@ -75,11 +55,8 @@
       "source": "./plugins/harness-extend",
       "description": "Extend existing harness projects with new features from incremental PDRs",
       "version": "3.0.0",
-      "author": {
-        "name": "Harness Development Team"
-      },
+      "author": { "name": "Harness Development Team" },
       "keywords": ["extend", "incremental", "features", "pdr"],
-      "category": "development",
       "license": "MIT"
     },
     {
@@ -87,11 +64,8 @@
       "source": "./plugins/harness-resume",
       "description": "Resume work after interruption with full context recovery",
       "version": "3.0.0",
-      "author": {
-        "name": "Harness Development Team"
-      },
+      "author": { "name": "Harness Development Team" },
       "keywords": ["resume", "recovery", "context", "interruption"],
-      "category": "development",
       "license": "MIT"
     },
     {
@@ -99,18 +73,9 @@
       "source": "./plugins/harness-agents",
       "description": "Specialized agents for parallel implementation coordination",
       "version": "3.0.0",
-      "author": {
-        "name": "Harness Development Team"
-      },
+      "author": { "name": "Harness Development Team" },
       "keywords": ["agents", "frontend", "backend", "data", "devops"],
-      "category": "development",
-      "license": "MIT",
-      "agents": [
-        "./agents/harness-frontend-agent.md",
-        "./agents/harness-backend-agent.md",
-        "./agents/harness-data-agent.md",
-        "./agents/harness-devops-agent.md"
-      ]
+      "license": "MIT"
     }
   ]
 }
