@@ -10,24 +10,10 @@
   "repository": "https://github.com/your-org/cylon26-harness",
   "license": "MIT",
   "keywords": ["context", "claude-md", "project", "templates", "harness"],
-  "category": "development",
   "skills": [
     "./skills/harness-context.md"
   ],
   "commands": [
     "./commands/"
-  ],
-  "metadata": {
-    "harness_version": "3.0.0",
-    "component_type": "context_manager",
-    "dependencies": {
-      "python": ">=3.8",
-      "required_tools": ["Read", "Write", "Edit", "Glob", "Grep", "Bash"]
-    },
-    "integration": {
-      "works_with": ["harness-init", "harness-plan", "harness-implement"],
-      "provides": ["claude.md generation", "project detection", "template system"],
-      "requires": []
-    }
-  }
+  ]
 }

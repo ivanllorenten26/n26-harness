@@ -10,17 +10,7 @@
   "repository": "https://github.com/your-org/cylon26-harness",
   "license": "MIT",
   "keywords": ["harness", "initialization", "pdr", "autonomous"],
-  "category": "development",
   "skills": [
     "./skills/harness-init.md"
-  ],
-  "metadata": {
-    "harness_version": "3.0.0",
-    "component_type": "project_initializer",
-    "integration": {
-      "works_with": ["harness-pdr", "harness-plan"],
-      "provides": ["project setup", "directory structure", "tracking files"],
-      "requires": ["harness-pdr"]
-    }
-  }
+  ]
 }

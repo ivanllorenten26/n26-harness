@@ -8,10 +8,5 @@
   },
   "license": "MIT",
   "keywords": ["extend", "incremental", "features", "pdr"],
-  "category": "development",
-  "skills": ["./skills/harness-extend.md"],
-  "metadata": {
-    "harness_version": "3.0.0",
-    "component_type": "feature_extender"
-  }
+  "skills": ["./skills/harness-extend.md"]
 }

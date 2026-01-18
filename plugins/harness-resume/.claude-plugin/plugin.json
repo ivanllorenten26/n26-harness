@@ -8,10 +8,5 @@
   },
   "license": "MIT",
   "keywords": ["resume", "recovery", "context", "interruption"],
-  "category": "development",
-  "skills": ["./skills/harness-resume.md"],
-  "metadata": {
-    "harness_version": "3.0.0",
-    "component_type": "context_recovery"
-  }
+  "skills": ["./skills/harness-resume.md"]
 }

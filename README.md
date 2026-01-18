@@ -6,6 +6,29 @@ A sophisticated implementation of Anthropic's methodology for long-running agent
 
 The Harness is a **marketplace-ready distribution of 8 Claude Code plugins** that enable autonomous software development from requirements to deployment. It implements a three-layered context management system that maintains architectural consistency across complex, long-running development projects.
 
+## Installation
+
+### 1. Add the marketplace
+
+```bash
+/plugin marketplace add ivanllorenten26/claude-marketplace
+```
+
+### 2. Install all harness plugins
+
+```bash
+/plugin install harness-init@n26-harness
+/plugin install harness-pdr@n26-harness
+/plugin install harness-plan@n26-harness
+/plugin install harness-implement@n26-harness
+/plugin install harness-context@n26-harness
+/plugin install harness-extend@n26-harness
+/plugin install harness-resume@n26-harness
+/plugin install harness-agents@n26-harness
+```
+
+After installation, all harness skills will be available using the `/` command syntax.
+
 ## Core Skills
 
 Install and use these Claude Code skills with the `/` command:

@@ -10,23 +10,10 @@
   "repository": "https://github.com/your-org/cylon26-harness",
   "license": "MIT",
   "keywords": ["agents", "frontend", "backend", "data", "devops", "harness"],
-  "category": "development",
   "agents": [
     "./agents/harness-frontend-agent.md",
     "./agents/harness-backend-agent.md",
     "./agents/harness-data-agent.md",
     "./agents/harness-devops-agent.md"
-  ],
-  "metadata": {
-    "harness_version": "3.0.0",
-    "component_type": "specialized_agents",
-    "dependencies": {
-      "required_tools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "TodoWrite"]
-    },
-    "integration": {
-      "works_with": ["harness-implement"],
-      "provides": ["parallel coordination", "specialized implementation"],
-      "requires": ["harness-plan"]
-    }
-  }
+  ]
 }

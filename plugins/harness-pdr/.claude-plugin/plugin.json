@@ -10,23 +10,10 @@
   "repository": "https://github.com/your-org/cylon26-harness",
   "license": "MIT",
   "keywords": ["pdr", "requirements", "documentation", "harness"],
-  "category": "documentation",
   "skills": [
     "./skills/harness-pdr.md"
   ],
   "commands": [
     "./commands/"
-  ],
-  "metadata": {
-    "harness_version": "3.0.0",
-    "component_type": "requirements_generator",
-    "dependencies": {
-      "required_tools": ["Read", "Write", "Edit", "AskUserQuestion"]
-    },
-    "integration": {
-      "works_with": ["harness-init"],
-      "provides": ["PDR creation", "requirements templates", "interactive interviews"],
-      "requires": []
-    }
-  }
+  ]
 }
