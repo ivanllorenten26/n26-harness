@@ -3,17 +3,12 @@
   "version": "3.0.0",
   "description": "Generate and manage claude.md files with project-specific context",
   "author": {
-    "name": "CYLON26 Team",
+    "name": "Ivan Llorente",
     "email": "ivan.llorente@n26.com"
   },
   "homepage": "https://github.com/your-org/cylon26-harness",
   "repository": "https://github.com/your-org/cylon26-harness",
   "license": "MIT",
   "keywords": ["context", "claude-md", "project", "templates", "harness"],
-  "skills": [
-    "./skills/harness-context.md"
-  ],
-  "commands": [
-    "./commands/"
-  ]
+  "skills": ["./skills/harness-context.md"]
 }

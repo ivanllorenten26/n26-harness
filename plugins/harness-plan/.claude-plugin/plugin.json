@@ -3,17 +3,12 @@
   "version": "3.0.0",
   "description": "Generate comprehensive architectural plans and YAML configurations",
   "author": {
-    "name": "CYLON26 Team",
+    "name": "Ivan Llorente",
     "email": "ivan.llorente@n26.com"
   },
   "homepage": "https://github.com/your-org/cylon26-harness",
   "repository": "https://github.com/your-org/cylon26-harness",
   "license": "MIT",
   "keywords": ["architecture", "planning", "yaml", "design"],
-  "skills": [
-    "./skills/harness-plan.md"
-  ],
-  "commands": [
-    "./commands/"
-  ]
+  "skills": ["./skills/harness-plan.md"]
 }

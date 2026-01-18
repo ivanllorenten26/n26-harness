@@ -3,17 +3,12 @@
   "version": "3.0.0",
   "description": "Create comprehensive Product Requirement Documents for harness projects",
   "author": {
-    "name": "CYLON26 Team",
+    "name": "Ivan Llorente",
     "email": "ivan.llorente@n26.com"
   },
   "homepage": "https://github.com/your-org/cylon26-harness",
   "repository": "https://github.com/your-org/cylon26-harness",
   "license": "MIT",
   "keywords": ["pdr", "requirements", "documentation", "harness"],
-  "skills": [
-    "./skills/harness-pdr.md"
-  ],
-  "commands": [
-    "./commands/"
-  ]
+  "skills": ["./skills/harness-pdr.md"]
 }

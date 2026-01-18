@@ -1,3 +1,11 @@
+---
+name: harness-context
+description: Generate and manage claude.md files with project-specific context
+allowed-tools: Read, Write, Glob, Grep, TodoWrite, Bash, Edit
+context: fork
+agent: general-purpose
+---
+
 # Harness Context - Gestión de claude.md
 
 ## Descripción

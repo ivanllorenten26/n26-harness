@@ -104,6 +104,16 @@ Modifica un agente existente preservando especialización.
 ```
 Valida la coherencia completa del sistema después de modificaciones.
 
+#### 8. Validar Plugins
+```bash
+/harness-manage validate-plugins
+```
+Ejecuta validaciones específicas de plugins:
+- YAML frontmatter en todos los skills
+- Referencias correctas en plugin.json
+- Directorios commands innecesarios
+- Registro correcto de skills en Claude Code
+
 #### 7. Generar Documentación
 ```bash
 /harness-manage document
@@ -150,9 +160,21 @@ Si los cambios afectan este skill:
 
 ### Para Skills
 - **Archivo principal**: `SKILL.md` con estructura estándar
+- **YAML Frontmatter**: OBLIGATORIO con formato exacto:
+  ```yaml
+  ---
+  name: skill-name
+  description: Clear description of functionality
+  allowed-tools: Read, Write, Glob, Grep, TodoWrite, Bash, Edit
+  context: fork
+  agent: general-purpose
+  ---
+  ```
 - **Documentación**: Descripción clara, uso, ejemplos
 - **Integración**: Compatible con sistema de context injection
 - **Herramientas**: Especificación clara de tools disponibles
+- **Commands Directory**: ⚠️ NO usar `commands/` directories vacíos
+- **Plugin.json**: NO referenciar `"commands": ["./commands/"]` si no hay archivos
 - **Validación**: Tests de funcionalidad básica
 
 ### Para Agentes
@@ -161,6 +183,25 @@ Si los cambios afectan este skill:
 - **Contexto**: Filtrado apropiado por tipo de agente
 - **Especialización**: Foco claro en dominio específico
 - **Coordinación**: Compatible con sistema de parallel execution
+
+### Para Plugin.json (Claude Code Plugins)
+- **Estructura mínima requerida**:
+  ```json
+  {
+    "name": "plugin-name",
+    "version": "3.0.0",
+    "description": "Clear plugin description",
+    "author": {
+      "name": "Author Name",
+      "email": "author@email.com"
+    },
+    "skills": ["./skills/plugin-name.md"]
+  }
+  ```
+- **⚠️ NO incluir `"commands": ["./commands/"]` si directory está vacío**
+- **✅ Usar `"agents": [...]` para plugins de agentes (ej: harness-agents)**
+- **✅ Validar que todos los paths referenciados existen**
+- **✅ Mantener naming consistente entre name y skill files**
 
 ### Para Documentación
 - **Formato**: Markdown con estructura consistente
@@ -171,7 +212,14 @@ Si los cambios afectan este skill:
 
 ## Seguridad y Validación
 
-### Validaciones Obligatorias
+### Validaciones Obligatorias de Plugins
+- **YAML Frontmatter**: Todos los skills deben tener YAML frontmatter válido
+- **Plugin.json Structure**: Validación de estructura y referencias correctas
+- **Commands Directory**: Verificación de directorios vacíos y referencias innecesarias
+- **Skills Registration**: Confirmación de que todos los skills se registran correctamente
+- **Tools Configuration**: Verificación de herramientas disponibles por skill
+
+### Validaciones Arquitectónicas Generales
 - **Coherencia arquitectónica**: Mantenimiento de principios harness
 - **Compatibilidad**: Con metodología Anthropic Long-Running Agents
 - **Funcionalidad**: Tests básicos de operación
@@ -202,6 +250,44 @@ Si los cambios afectan este skill:
 - **Planning Prevention**: Forzado de análisis previo
 - **Context Preservation**: Conservación de continuidad
 - **Incremental Progress**: Desarrollo paso a paso
+
+## Checklist de Validación de Plugins
+
+### ✅ Antes de Crear/Modificar Cualquier Plugin
+
+**1. YAML Frontmatter (CRÍTICO)**
+- [ ] Skill file tiene `---` al inicio y final
+- [ ] Contiene `name:` (coincide con plugin name)
+- [ ] Contiene `description:` (descripción clara)
+- [ ] Contiene `allowed-tools:` (herramientas específicas)
+- [ ] Contiene `context: fork`
+- [ ] Contiene `agent: general-purpose`
+
+**2. Plugin.json Structure**
+- [ ] Archivo `.claude-plugin/plugin.json` existe
+- [ ] Contiene campos obligatorios: name, version, description, author
+- [ ] Path `skills: ["./skills/..."]` apunta a archivo existente
+- [ ] ⚠️ NO contiene `"commands": ["./commands/"]` si directory vacío
+- [ ] Naming consistente entre plugin name y skill file
+
+**3. Directory Structure**
+- [ ] Commands directory: eliminar si está vacío O no referenciar en plugin.json
+- [ ] Skills directory: contiene skill files con YAML frontmatter
+- [ ] Templates directory: templates específicos del plugin (opcional)
+- [ ] Utils directory: utilidades Python (opcional)
+
+**4. Post-Creation Testing**
+- [ ] Plugin se registra correctamente en Claude Code
+- [ ] Skill está disponible con `/plugin-name`
+- [ ] No hay errores de "commands path not found"
+- [ ] Herramientas permitidas funcionan correctamente
+
+### 🔥 Errores Comunes a Evitar
+- **Skills sin YAML frontmatter** → Claude Code no registra el skill
+- **Commands directories vacíos referenciados** → Error "commands path not found"
+- **Naming inconsistente** → Confusión en registro de skills
+- **Paths inexistentes en plugin.json** → Errores de carga
+- **Tools no permitidos** → Fallos de ejecución de skill
 
 ## Ejemplos de Uso
 

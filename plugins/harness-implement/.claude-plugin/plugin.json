@@ -3,17 +3,12 @@
   "version": "3.0.0",
   "description": "Execute parallel implementation with specialized agents and context injection",
   "author": {
-    "name": "CYLON26 Team",
+    "name": "Ivan Llorente",
     "email": "ivan.llorente@n26.com"
   },
   "homepage": "https://github.com/your-org/cylon26-harness",
   "repository": "https://github.com/your-org/cylon26-harness",
   "license": "MIT",
   "keywords": ["implementation", "agents", "parallel", "development"],
-  "skills": [
-    "./skills/harness-implement.md"
-  ],
-  "commands": [
-    "./commands/"
-  ]
+  "skills": ["./skills/harness-implement.md"]
 }
