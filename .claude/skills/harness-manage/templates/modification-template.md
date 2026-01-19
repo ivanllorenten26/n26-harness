@@ -277,6 +277,6 @@ validacion_funcional:
 
 ---
 
-**Template para Modificaciones Seguras del Ecosistema CYLON26**
+**Template para Modificaciones Seguras del Ecosistema N26**
 
 *"Una modificación bien planificada es una mejora garantizada"*

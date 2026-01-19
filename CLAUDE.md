@@ -41,7 +41,7 @@ The codebase includes 146+ pre-approved bash commands in `.claude/settings.local
 
 ## High-Level Architecture
 
-This is the **CYLON26 Harness Ecosystem** - a sophisticated implementation of Anthropic's methodology for long-running agents using Claude Code. It transforms Claude from an ad-hoc coding assistant into a systematic autonomous development platform.
+This is the **N26 Harness Ecosystem** - a sophisticated implementation of Anthropic's methodology for long-running agents using Claude Code. It transforms Claude from an ad-hoc coding assistant into a systematic autonomous development platform.
 
 ### Core Architecture Pattern
 

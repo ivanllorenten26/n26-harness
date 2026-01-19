@@ -331,5 +331,5 @@ src/main/resources/
 ---
 
 *📅 Última actualización: {{CURRENT_DATE}}*
-*🤖 Generado automáticamente por CYLON26 Harness System para Spring Boot*
+*🤖 Generado automáticamente por N26 Harness System para Spring Boot*
 *✨ Customizar según las necesidades específicas del servicio Spring Boot*

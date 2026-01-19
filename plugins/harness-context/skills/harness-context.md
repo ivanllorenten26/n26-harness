@@ -314,7 +314,7 @@ Run /harness-context update --apply to implement changes
 ## Metadatos del Skill
 
 - **Versión**: 1.0.0
-- **Autor**: CYLON26 Harness System
+- **Autor**: N26 Harness System
 - **Dependencias**: project-detector.py, context-injector.py
 - **Compatibilidad**: Todos los lenguajes soportados por el harness
 - **Última actualización**: 2024-01-16

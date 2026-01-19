@@ -2,7 +2,7 @@
 
 ## Introducción
 
-El skill `harness-manage` representa una innovación fundamental en la evolución del ecosistema CYLON26. Es el primer skill autoevolutivo del sistema, capaz de analizar, modificar y mejorar tanto otros componentes como a sí mismo, manteniendo siempre la coherencia arquitectónica y la compatibilidad con la metodología de Anthropic Long-Running Agents.
+El skill `harness-manage` representa una innovación fundamental en la evolución del ecosistema N26. Es el primer skill autoevolutivo del sistema, capaz de analizar, modificar y mejorar tanto otros componentes como a sí mismo, manteniendo siempre la coherencia arquitectónica y la compatibilidad con la metodología de Anthropic Long-Running Agents.
 
 ## Problemática Solucionada
 
@@ -435,4 +435,4 @@ El skill `harness-manage` representa un salto evolutivo en la gestión de sistem
 
 **HARNESS MANAGE v1.0 - Gestión Inteligente para Evolución Autónoma**
 
-*Parte del ecosistema CYLON26 - "BY YOUR COMMAND"*
+*Parte del ecosistema N26 - "BY YOUR COMMAND"*

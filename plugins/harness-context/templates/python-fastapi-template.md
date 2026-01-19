@@ -256,5 +256,5 @@ app/
 ---
 
 *📅 Última actualización: {{CURRENT_DATE}}*
-*🤖 Generado automáticamente por CYLON26 Harness System para FastAPI*
+*🤖 Generado automáticamente por N26 Harness System para FastAPI*
 *✨ Customizar según las necesidades específicas de la API FastAPI*

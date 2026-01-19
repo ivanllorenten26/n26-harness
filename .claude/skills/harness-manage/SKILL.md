@@ -2,7 +2,7 @@
 
 ## Descripción
 
-Este skill proporciona capacidades completas para modificar, crear y gestionar los agentes y skills del ecosistema CYLON26 Harness. Antes de realizar cualquier modificación, analiza profundamente la estructura existente para garantizar compatibilidad y coherencia con la metodología de Anthropic Long-Running Agents.
+Este skill proporciona capacidades completas para modificar, crear y gestionar los agentes y skills del ecosistema N26 Harness. Antes de realizar cualquier modificación, analiza profundamente la estructura existente para garantizar compatibilidad y coherencia con la metodología de Anthropic Long-Running Agents.
 
 ## Funcionalidades Principales
 
@@ -346,7 +346,7 @@ Este skill está diseñado para evolucionar automáticamente:
 
 ---
 
-**HARNESS MANAGE - Evolución Inteligente del Ecosistema CYLON26**
+**HARNESS MANAGE - Evolución Inteligente del Ecosistema N26**
 
 *"Un sistema que se conoce a sí mismo puede evolucionar hacia la perfección"*
 
@@ -355,7 +355,7 @@ Este skill está diseñado para evolucionar automáticamente:
 ## Metadatos del Skill
 
 - **Versión**: 1.0.0
-- **Autor**: CYLON26 Harness Ecosystem
+- **Autor**: N26 Harness Ecosystem
 - **Compatibilidad**: Anthropic Long-Running Agents Methodology
 - **Dependencias**: context-injector.py, task-coordinator.py
 - **Última actualización**: 2024-01-16

@@ -4,7 +4,7 @@
 
 ### 1. **PDRs del Ecosistema** (Templates y ejemplos)
 ```
-cylon26/
+n26-harness/
 ├── plugins/harness-pdr/
 │   └── templates/
 │       ├── example-web-app.md        # Ejemplo completo
@@ -118,7 +118,7 @@ mi-proyecto/
 
 1. **PDRs de trabajo**: `~/pdrs/` (tu directorio personal)
 2. **PDRs de proyecto**: `.claude/pdr.md` (copiado automáticamente)
-3. **Templates**: `cylon26/plugins/harness-pdr/templates/` (este ecosistema)
+3. **Templates**: `n26-harness/plugins/harness-pdr/templates/` (este ecosistema)
 
 Esto te permite:
 - ✅ Gestionar PDRs independientemente de proyectos

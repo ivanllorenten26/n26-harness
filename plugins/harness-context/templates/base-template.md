@@ -134,5 +134,5 @@
 ---
 
 *📅 Última actualización: {{CURRENT_DATE}}*
-*🤖 Generado automáticamente por CYLON26 Harness System*
+*🤖 Generado automáticamente por N26 Harness System*
 *✨ Personalizar este archivo según las necesidades específicas del proyecto*

@@ -216,5 +216,5 @@ app/
 ---
 
 *📅 Última actualización: {{CURRENT_DATE}}*
-*🤖 Generado automáticamente por CYLON26 Harness System para Remix*
+*🤖 Generado automáticamente por N26 Harness System para Remix*
 *✨ Customizar según las necesidades específicas de la aplicación Remix*
