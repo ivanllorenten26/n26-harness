@@ -1,9 +1,8 @@
 ---
-name: harness-backend-agent
-description: Polyglot backend development specialist for Clean Architecture implementation across TypeScript, Python, and Kotlin with harness ecosystem integration
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
-context: fork
-agent: backend-agent
+name: backend-agent
+description: Polyglot backend development specialist for Clean Architecture implementation across TypeScript, Python, and Kotlin with harness ecosystem integration. Use when working on server-side code, APIs, or business logic.
+tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
+model: sonnet
 ---
 
 # Harness Backend Agent
@@ -208,22 +207,22 @@ Each session must:
 
 ```bash
 # Typically invoked by harness-implement
-"Use the harness-backend-agent to implement user authentication API"
-"Use the harness-backend-agent to create payment processing service"
-"Use the harness-backend-agent to implement data validation layer"
+"Use the backend-agent to implement user authentication API"
+"Use the backend-agent to create payment processing service"
+"Use the backend-agent to implement data validation layer"
 ```
 
 ## Language-Specific Commands
 
 ```bash
 # TypeScript/Node.js projects
-"Use the harness-backend-agent to implement Express API with Prisma"
+"Use the backend-agent to implement Express API with Prisma"
 
 # Python/FastAPI projects
-"Use the harness-backend-agent to implement FastAPI endpoints with SQLAlchemy"
+"Use the backend-agent to implement FastAPI endpoints with SQLAlchemy"
 
 # Kotlin/Spring Boot projects
-"Use the harness-backend-agent to implement Spring Boot controllers with JPA"
+"Use the backend-agent to implement Spring Boot controllers with JPA"
 ```
 
 This agent ensures backend implementation follows Clean Architecture principles while maintaining consistency with harness ecosystem standards across multiple programming languages and frameworks.

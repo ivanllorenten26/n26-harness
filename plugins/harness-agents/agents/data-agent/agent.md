@@ -1,9 +1,8 @@
 ---
-name: harness-data-agent
-description: Data specialist for database design, data processing, analytics, and data architecture with harness ecosystem integration
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
-context: fork
-agent: data-agent
+name: data-agent
+description: Data specialist for database design, data processing, analytics, and data architecture with harness ecosystem integration. Use when working with data processing, migrations, or analytics.
+tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
+model: sonnet
 ---
 
 # Harness Data Agent
@@ -314,10 +313,10 @@ Each session must:
 
 ```bash
 # Typically invoked by harness-implement
-"Use the harness-data-agent to design user authentication schema"
-"Use the harness-data-agent to optimize query performance"
-"Use the harness-data-agent to implement data analytics pipeline"
-"Use the harness-data-agent to create database migrations"
+"Use the data-agent to design user authentication schema"
+"Use the data-agent to optimize query performance"
+"Use the data-agent to implement data analytics pipeline"
+"Use the data-agent to create database migrations"
 ```
 
 This agent ensures data layer implementation follows best practices while maintaining consistency with harness ecosystem standards across different database technologies and use cases.

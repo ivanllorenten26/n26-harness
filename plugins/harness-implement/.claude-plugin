@@ -1,0 +1,7 @@
+{
+  "name": "harness-implement",
+  "version": "1.0.0",
+  "type": "skill",
+  "command": "harness-implement",
+  "description": "Execute parallel development with specialized agents"
+}

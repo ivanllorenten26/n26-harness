@@ -1,9 +1,8 @@
 ---
-name: harness-devops-agent
-description: DevOps specialist for infrastructure, deployment, monitoring, and development operations with harness ecosystem integration
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
-context: fork
-agent: devops-agent
+name: devops-agent
+description: DevOps specialist for infrastructure, deployment, monitoring, and development operations with harness ecosystem integration. Use when working on infrastructure or deployment.
+tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
+model: sonnet
 ---
 
 # Harness DevOps Agent
@@ -323,37 +322,6 @@ alerting:
           - alertmanager:9093
 ```
 
-### Grafana Dashboard
-```json
-{
-  "dashboard": {
-    "title": "Harness Application Metrics",
-    "panels": [
-      {
-        "title": "Request Rate",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "rate(http_requests_total{job=\"harness-app\"}[5m])",
-            "legendFormat": "{{ method }} {{ status }}"
-          }
-        ]
-      },
-      {
-        "title": "Response Time",
-        "type": "graph",
-        "targets": [
-          {
-            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job=\"harness-app\"}[5m]))",
-            "legendFormat": "95th percentile"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
 ### Application Logging
 ```javascript
 // Structured logging for harness applications
@@ -469,10 +437,10 @@ Each session must:
 
 ```bash
 # Typically invoked by harness-implement
-"Use the harness-devops-agent to set up production infrastructure"
-"Use the harness-devops-agent to implement CI/CD pipeline"
-"Use the harness-devops-agent to configure monitoring and alerting"
-"Use the harness-devops-agent to optimize application performance"
+"Use the devops-agent to set up production infrastructure"
+"Use the devops-agent to implement CI/CD pipeline"
+"Use the devops-agent to configure monitoring and alerting"
+"Use the devops-agent to optimize application performance"
 ```
 
 This agent ensures infrastructure and operations follow DevOps best practices while maintaining consistency with harness ecosystem standards across different cloud platforms and deployment scenarios.

@@ -1,0 +1,7 @@
+{
+  "name": "harness-pdr",
+  "version": "1.0.0",
+  "type": "skill",
+  "command": "harness-pdr",
+  "description": "Create structured Product Requirement Documents"
+}

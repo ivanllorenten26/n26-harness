@@ -1,0 +1,7 @@
+{
+  "name": "harness-context",
+  "version": "1.0.0",
+  "type": "skill",
+  "command": "harness-context",
+  "description": "Manage three-layered context system"
+}

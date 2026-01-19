@@ -1,9 +1,8 @@
 ---
-name: harness-frontend-agent
-description: Frontend development specialist for React, TypeScript, UI/UX, and modern web development with harness ecosystem integration
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
-context: fork
-agent: frontend-agent
+name: frontend-agent
+description: Frontend development specialist for React, TypeScript, UI/UX, and modern web development with harness ecosystem integration. Use proactively when creating or modifying UI components.
+tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
+model: sonnet
 ---
 
 # Harness Frontend Agent
@@ -140,9 +139,9 @@ Each session must:
 
 ```bash
 # Typically invoked by harness-implement
-"Use the harness-frontend-agent to implement the user dashboard"
-"Use the harness-frontend-agent to create responsive navigation"
-"Use the harness-frontend-agent to integrate authentication UI"
+"Use the frontend-agent to implement the user dashboard"
+"Use the frontend-agent to create responsive navigation"
+"Use the frontend-agent to integrate authentication UI"
 ```
 
 This agent ensures frontend implementation maintains the high standards and architectural consistency required by the harness ecosystem while delivering exceptional user experiences.

@@ -1,0 +1,7 @@
+{
+  "name": "harness-extend",
+  "version": "1.0.0",
+  "type": "skill",
+  "command": "harness-extend",
+  "description": "Add incremental features to existing projects"
+}

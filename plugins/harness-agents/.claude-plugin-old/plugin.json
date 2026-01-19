@@ -1,0 +1,19 @@
+{
+  "name": "harness-agents",
+  "version": "3.0.0",
+  "description": "Specialized agents for parallel implementation coordination in harness ecosystem",
+  "author": {
+    "name": "Ivan Llorente",
+    "email": "ivan.llorente@n26.com"
+  },
+  "homepage": "https://github.com/ivanllorenten26/claude-marketplace",
+  "repository": "https://github.com/ivanllorenten26/claude-marketplace",
+  "license": "MIT",
+  "keywords": ["agents", "frontend", "backend", "data", "devops", "harness"],
+  "agents": [
+    "./agents/harness-frontend-agent.md",
+    "./agents/harness-backend-agent.md",
+    "./agents/harness-data-agent.md",
+    "./agents/harness-devops-agent.md"
+  ]
+}
