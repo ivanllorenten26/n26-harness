@@ -1,0 +1,8 @@
+{
+  "name": "harness-init",
+  "version": "1.0.0",
+  "description": "Initialize projects from PDRs with infrastructure setup",
+  "author": {
+    "name": "Ivan Llorente"
+  }
+}

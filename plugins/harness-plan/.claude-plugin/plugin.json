@@ -1,0 +1,8 @@
+{
+  "name": "harness-plan",
+  "version": "1.0.0",
+  "description": "Generate YAML architectural blueprints",
+  "author": {
+    "name": "Ivan Llorente"
+  }
+}

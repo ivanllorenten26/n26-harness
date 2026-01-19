@@ -1,0 +1,8 @@
+{
+  "name": "harness-implement",
+  "version": "1.0.0",
+  "description": "Execute parallel development with specialized agents",
+  "author": {
+    "name": "Ivan Llorente"
+  }
+}

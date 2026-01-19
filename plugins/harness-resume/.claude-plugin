@@ -1,7 +1,0 @@
-{
-  "name": "harness-resume",
-  "version": "1.0.0",
-  "type": "skill",
-  "command": "harness-resume",
-  "description": "Resume interrupted work with context recovery"
-}

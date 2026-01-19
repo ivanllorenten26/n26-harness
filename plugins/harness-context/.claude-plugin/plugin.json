@@ -1,0 +1,8 @@
+{
+  "name": "harness-context",
+  "version": "1.0.0",
+  "description": "Manage three-layered context system",
+  "author": {
+    "name": "Ivan Llorente"
+  }
+}

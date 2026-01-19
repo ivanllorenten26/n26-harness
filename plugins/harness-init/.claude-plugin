@@ -1,7 +1,0 @@
-{
-  "name": "harness-init",
-  "version": "1.0.0",
-  "type": "skill",
-  "command": "harness-init",
-  "description": "Initialize projects from PDRs with infrastructure setup"
-}

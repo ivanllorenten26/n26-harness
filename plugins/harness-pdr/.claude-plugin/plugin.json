@@ -1,0 +1,8 @@
+{
+  "name": "harness-pdr",
+  "version": "1.0.0",
+  "description": "Create structured Product Requirement Documents",
+  "author": {
+    "name": "Ivan Llorente"
+  }
+}

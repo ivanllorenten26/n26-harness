@@ -1,0 +1,8 @@
+{
+  "name": "harness-extend",
+  "version": "1.0.0",
+  "description": "Add incremental features to existing projects",
+  "author": {
+    "name": "Ivan Llorente"
+  }
+}

@@ -1,7 +1,0 @@
-{
-  "name": "harness-plan",
-  "version": "1.0.0",
-  "type": "skill",
-  "command": "harness-plan",
-  "description": "Generate YAML architectural blueprints"
-}
