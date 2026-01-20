@@ -2,6 +2,31 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Repository Purpose
+
+This is a **Claude Code Plugin Marketplace** - a curated collection of specialized plugins that transform Claude Code into a systematic autonomous development platform. The repository implements a revolutionary concept: **Living Documentation** that serves as both context for AI-driven development and self-updating architectural blueprints.
+
+### Core Concept: Living Documentation Loop
+
+The harness creates a closed-loop system where:
+
+1. **Documentation serves as AI context** - Structured YAML architectural blueprints and JSON progress tracking provide precise context to Claude agents during feature implementation
+2. **AI updates the documentation** - As features are implemented, the harness tools automatically update the architectural documents, progress tracking, and context artifacts
+3. **Documentation evolves with the codebase** - Each development iteration refines and expands the living documentation, creating an ever-improving knowledge base for future development cycles
+
+This creates a self-reinforcing development ecosystem where the AI's context becomes more accurate and comprehensive with each feature implementation, enabling truly autonomous long-running development workflows.
+
+### Plugin Marketplace Architecture
+
+The repository distributes 8 specialized Claude Code plugins that work together to implement this living documentation system:
+
+- **Requirements & Planning**: `harness-pdr`, `harness-plan` - Transform user needs into structured architectural blueprints
+- **Implementation & Coordination**: `harness-implement`, `harness-agents` - Execute parallel development with context-aware agent coordination
+- **Project Lifecycle**: `harness-init`, `harness-extend`, `harness-resume` - Manage project initialization, evolutionary growth, and seamless continuation
+- **Context Management**: `harness-context` - Inject filtered architectural context to prevent context pollution during parallel development
+
+Each plugin contains both the Claude Code skill definitions and specialized Python utilities that handle context injection, progress tracking, and documentation updates - closing the loop between AI context and living documentation.
+
 ## Development Commands
 
 ### Testing
