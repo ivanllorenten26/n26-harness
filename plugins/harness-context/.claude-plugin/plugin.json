@@ -4,5 +4,8 @@
   "description": "Manage three-layered context system",
   "author": {
     "name": "Ivan Llorente"
-  }
+  },
+  "skills": [
+    "skills/harness-context"
+  ]
 }

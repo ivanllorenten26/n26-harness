@@ -4,5 +4,8 @@
   "description": "Execute parallel development with specialized agents",
   "author": {
     "name": "Ivan Llorente"
-  }
+  },
+  "skills": [
+    "skills/harness-implement"
+  ]
 }

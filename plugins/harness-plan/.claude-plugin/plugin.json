@@ -4,5 +4,8 @@
   "description": "Generate YAML architectural blueprints",
   "author": {
     "name": "Ivan Llorente"
-  }
+  },
+  "skills": [
+    "skills/harness-plan"
+  ]
 }

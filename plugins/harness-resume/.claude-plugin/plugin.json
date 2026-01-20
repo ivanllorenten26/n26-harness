@@ -4,5 +4,8 @@
   "description": "Resume interrupted work with context recovery",
   "author": {
     "name": "Ivan Llorente"
-  }
+  },
+  "skills": [
+    "skills/harness-resume"
+  ]
 }

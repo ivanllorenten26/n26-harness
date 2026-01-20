@@ -13,56 +13,64 @@
       "description": "Initialize projects from PDRs with infrastructure setup",
       "source": "./plugins/harness-init",
       "category": "development",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "skills": ["./"]
     },
     {
       "name": "harness-pdr",
       "description": "Create structured Product Requirement Documents",
       "source": "./plugins/harness-pdr",
       "category": "development",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "skills": ["./"]
     },
     {
       "name": "harness-plan",
       "description": "Generate YAML architectural blueprints",
       "source": "./plugins/harness-plan",
       "category": "development",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "skills": ["./"]
     },
     {
       "name": "harness-implement",
       "description": "Execute parallel development with specialized agents",
       "source": "./plugins/harness-implement",
       "category": "development",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "skills": ["./"]
     },
     {
       "name": "harness-context",
       "description": "Manage three-layered context system",
       "source": "./plugins/harness-context",
       "category": "development",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "skills": ["./"]
     },
     {
       "name": "harness-extend",
       "description": "Add incremental features to existing projects",
       "source": "./plugins/harness-extend",
       "category": "development",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "skills": ["./"]
     },
     {
       "name": "harness-resume",
       "description": "Resume interrupted work with context recovery",
       "source": "./plugins/harness-resume",
       "category": "development",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "skills": ["./"]
     },
     {
       "name": "harness-agents",
       "description": "Specialized development agents for parallel implementation",
       "source": "./plugins/harness-agents",
       "category": "development",
-      "version": "1.0.0"
+      "version": "1.0.0",
+      "agents": ["./"]
     }
   ]
 }

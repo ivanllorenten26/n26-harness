@@ -4,5 +4,8 @@
   "description": "Add incremental features to existing projects",
   "author": {
     "name": "Ivan Llorente"
-  }
+  },
+  "skills": [
+    "skills/harness-extend"
+  ]
 }

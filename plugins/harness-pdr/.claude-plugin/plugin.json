@@ -4,5 +4,8 @@
   "description": "Create structured Product Requirement Documents",
   "author": {
     "name": "Ivan Llorente"
-  }
+  },
+  "skills": [
+    "skills/harness-pdr"
+  ]
 }
