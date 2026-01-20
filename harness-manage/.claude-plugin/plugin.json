@@ -9,7 +9,7 @@
   "license": "MIT",
   "keywords": ["manage", "validation", "ecosystem", "analysis"],
   "category": "development",
-  "skills": ["./skills/harness-manage.md"],
+  "skills": "./skills/",
   "metadata": {
     "harness_version": "3.0.0",
     "component_type": "ecosystem_manager"

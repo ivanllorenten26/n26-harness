@@ -1,76 +1,64 @@
 {
-  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "n26-harness",
-  "version": "1.0.0",
-  "description": "Marketplace for N26 Harness - Autonomous development plugins with specialized agents",
+  "description": "Marketplace-ready distribution of Claude Code plugins for autonomous software development",
   "owner": {
     "name": "Ivan Llorente",
-    "email": "ivan.llorente@n26.com"
+    "url": "https://github.com/ivanllorenten26"
   },
   "plugins": [
     {
       "name": "harness-init",
+      "source": "./harness-init",
       "description": "Initialize projects from PDRs with infrastructure setup",
-      "source": "./plugins/harness-init",
-      "category": "development",
-      "version": "1.0.0",
-      "skills": ["./"]
+      "skills": ["./harness-init/skills"]
     },
     {
       "name": "harness-pdr",
+      "source": "./harness-pdr",
       "description": "Create structured Product Requirement Documents",
-      "source": "./plugins/harness-pdr",
-      "category": "development",
-      "version": "1.0.0",
-      "skills": ["./"]
+      "skills": ["./harness-pdr/skills"]
     },
     {
       "name": "harness-plan",
+      "source": "./harness-plan",
       "description": "Generate YAML architectural blueprints",
-      "source": "./plugins/harness-plan",
-      "category": "development",
-      "version": "1.0.0",
-      "skills": ["./"]
+      "skills": ["./harness-plan/skills"]
     },
     {
       "name": "harness-implement",
+      "source": "./harness-implement",
       "description": "Execute parallel development with specialized agents",
-      "source": "./plugins/harness-implement",
-      "category": "development",
-      "version": "1.0.0",
-      "skills": ["./"]
+      "skills": ["./harness-implement/skills"]
     },
     {
       "name": "harness-context",
+      "source": "./harness-context",
       "description": "Manage three-layered context system",
-      "source": "./plugins/harness-context",
-      "category": "development",
-      "version": "1.0.0",
-      "skills": ["./"]
+      "skills": ["./harness-context/skills"]
     },
     {
       "name": "harness-extend",
+      "source": "./harness-extend",
       "description": "Add incremental features to existing projects",
-      "source": "./plugins/harness-extend",
-      "category": "development",
-      "version": "1.0.0",
-      "skills": ["./"]
+      "skills": ["./harness-extend/skills"]
     },
     {
       "name": "harness-resume",
+      "source": "./harness-resume",
       "description": "Resume interrupted work with context recovery",
-      "source": "./plugins/harness-resume",
-      "category": "development",
-      "version": "1.0.0",
-      "skills": ["./"]
+      "skills": ["./harness-resume/skills"]
     },
     {
       "name": "harness-agents",
-      "description": "Specialized development agents for parallel implementation",
-      "source": "./plugins/harness-agents",
-      "category": "development",
-      "version": "1.0.0",
-      "agents": ["./"]
+      "source": "./harness-agents",
+      "description": "Coordinate specialized development agents",
+      "skills": ["./harness-agents/skills"]
+    },
+    {
+      "name": "harness-manage",
+      "source": "./harness-manage",
+      "description": "Manage harness project lifecycle and coordination",
+      "skills": ["./harness-manage/skills"]
     }
   ]
 }

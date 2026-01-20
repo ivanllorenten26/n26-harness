@@ -1,6 +1,6 @@
 ---
 name: harness-context
-description: Generate and manage claude.md files with project-specific context
+description: Generate and manage claude.md files with project-specific context. Use when you need to create or update project documentation, establish coding standards, or inject architectural context
 allowed-tools: Read, Write, Glob, Grep, TodoWrite, Bash, Edit
 context: fork
 agent: general-purpose
